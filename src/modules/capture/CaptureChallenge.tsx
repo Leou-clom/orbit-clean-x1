@@ -67,9 +67,12 @@ export function CaptureChallenge({ kinds, targetName, onComplete, onFail }: Capt
   };
 
   // El bucle y los listeners se montan una vez por prueba; leer `advance` por referencia evita
-  // reengancharlos en cada render y quedarse con un cierre viejo.
+  // reengancharlos en cada render y quedarse con un cierre viejo. La sincronización va en un
+  // efecto porque escribir en una ref durante el render rompe las reglas de React.
   const advanceRef = useRef(advance);
-  advanceRef.current = advance;
+  useEffect(() => {
+    advanceRef.current = advance;
+  });
 
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
