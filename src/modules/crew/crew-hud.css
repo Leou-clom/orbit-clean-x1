@@ -46,7 +46,7 @@
   display: grid;
   gap: 2px;
   font-size: 11px;
-  color: #8fb4c9;
+  color: #a3a3a3;
 }
 
 .avatar-name {
@@ -56,11 +56,11 @@
 }
 
 .avatar-mood {
-  color: #7fdbff;
+  color: #d6d6d6;
 }
 
 .avatar-state {
-  color: #8fb4c9;
+  color: #a3a3a3;
 }
 
 .avatar-body {
@@ -298,12 +298,12 @@
   grid-template-columns: 1fr auto;
   gap: 2px 6px;
   font-size: 11px;
-  color: #8fb4c9;
+  color: #a3a3a3;
 }
 
 .vital-value {
   font-family: Consolas, monospace;
-  color: #e8f7ff;
+  color: #f2f2f2;
 }
 
 .vital-track {
@@ -321,12 +321,12 @@
   transition: width 200ms linear;
 }
 
-.vital-hull .vital-fill { background: linear-gradient(90deg, #3dff9a, #3ee0ff); }
+.vital-hull .vital-fill { background: linear-gradient(90deg, #3dff9a, #dcdcdc); }
 .vital-heart .vital-fill { background: linear-gradient(90deg, #ff8a3d, #ff5d5d); }
-.vital-oxygen .vital-fill { background: linear-gradient(90deg, #1f7cff, #3ee0ff); }
-.vital-stress .vital-fill { background: linear-gradient(90deg, #a78bfa, #f472b6); }
+.vital-oxygen .vital-fill { background: linear-gradient(90deg, #8a8a8a, #dcdcdc); }
+.vital-stress .vital-fill { background: linear-gradient(90deg, #b4b4b4, #f472b6); }
 .vital-focus .vital-fill { background: linear-gradient(90deg, #3dff9a, #a3e635); }
-.vital-fatigue .vital-fill { background: linear-gradient(90deg, #5b8cff, #818cf8); }
+.vital-fatigue .vital-fill { background: linear-gradient(90deg, #8a8a8a, #a0a0a0); }
 
 .vital-warn .vital-value {
   color: #ffb27a;
@@ -342,7 +342,7 @@
   align-items: center;
   margin: 0;
   font-size: 11px;
-  color: #8fb4c9;
+  color: #a3a3a3;
 }
 
 .crew-hud-live {

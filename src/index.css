@@ -2,8 +2,8 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: #e2e8f0;
-  background: #020617;
+  color: #e8e8e8;
+  background: #040404;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -25,7 +25,7 @@ body,
 
 body {
   min-height: 100vh;
-  background: #020617;
+  background: #040404;
 }
 
 button {

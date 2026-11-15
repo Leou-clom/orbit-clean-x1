@@ -20,7 +20,7 @@
   overflow-y: auto;
   padding: 22px;
   border-radius: 18px;
-  color: #dcf1ff;
+  color: #ededed;
   background: rgba(20, 20, 20, 0.52);
   border: 1px solid rgba(255, 255, 255, 0.13);
   backdrop-filter: blur(18px) saturate(100%);
@@ -32,7 +32,7 @@
   margin: 0;
   font-size: 11px;
   letter-spacing: 0.14em;
-  color: #7fdbff;
+  color: #d6d6d6;
 }
 
 .design-header h2 {
@@ -44,7 +44,7 @@
 .design-objective {
   margin: 0;
   font-size: 13px;
-  color: #8fb4c9;
+  color: #a3a3a3;
 }
 
 .design-resources {
@@ -62,7 +62,7 @@
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #7fdbff;
+  color: #d6d6d6;
 }
 
 .design-resource span {
@@ -91,7 +91,7 @@
 .design-bar-fill {
   height: 100%;
   border-radius: 99px;
-  background: linear-gradient(90deg, #1f7cff, #3ee0ff);
+  background: linear-gradient(90deg, #8a8a8a, #dcdcdc);
   transition: width 160ms ease-out;
 }
 
@@ -114,7 +114,7 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #79d2ff;
+  color: #d0d0d0;
 }
 
 .design-options {
@@ -131,17 +131,17 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #c5e8f6;
+  color: #e4e4e4;
   cursor: pointer;
 }
 
 .design-option:hover {
-  border-color: rgba(62, 224, 255, 0.5);
+  border-color: rgba(230, 230, 230, 0.5);
 }
 
 .design-option-active {
-  background: rgba(62, 224, 255, 0.14);
-  border-color: #6cf0ff;
+  background: rgba(230, 230, 230, 0.14);
+  border-color: #f2f2f2;
 }
 
 .design-option strong {
@@ -156,7 +156,7 @@
 .design-option small {
   font-family: Consolas, monospace;
   font-size: 10px;
-  color: #79d2ff;
+  color: #d0d0d0;
 }
 
 .design-preview {
@@ -171,7 +171,7 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #79d2ff;
+  color: #d0d0d0;
 }
 
 .design-preview ul {
@@ -182,7 +182,7 @@
   padding: 0;
   list-style: none;
   font-size: 12px;
-  color: #c5e8f6;
+  color: #e4e4e4;
 }
 
 .design-preview strong {
@@ -222,21 +222,21 @@
   gap: 8px;
   padding: 11px 16px;
   background: transparent;
-  color: #d8f7ff;
-  border: 1px solid rgba(62, 224, 255, 0.55);
+  color: #ebebeb;
+  border: 1px solid rgba(230, 230, 230, 0.55);
   border-radius: 999px;
   cursor: pointer;
   font-size: 13px;
 }
 
 .design-button:hover:not(:disabled) {
-  background: rgba(62, 224, 255, 0.12);
+  background: rgba(230, 230, 230, 0.12);
 }
 
 .design-button-primary {
   flex: 2;
-  background: rgba(62, 224, 255, 0.2);
-  border-color: #6cf0ff;
+  background: rgba(230, 230, 230, 0.2);
+  border-color: #f2f2f2;
   color: #ffffff;
 }
 

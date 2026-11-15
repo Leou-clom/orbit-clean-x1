@@ -31,10 +31,10 @@
   pointer-events: none;
 }
 
-.stats-card-cyan .stats-card-glow { background: #3ee0ff; }
+.stats-card-cyan .stats-card-glow { background: #dcdcdc; }
 .stats-card-green .stats-card-glow { background: #3dff9a; }
 .stats-card-amber .stats-card-glow { background: #ffd15c; }
-.stats-card-violet .stats-card-glow { background: #a78bfa; }
+.stats-card-violet .stats-card-glow { background: #b4b4b4; }
 .stats-card-rose .stats-card-glow { background: #ff8a3d; }
 
 .stats-card-row {
@@ -96,8 +96,8 @@
   border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
-.stats-card-cyan .stats-card-icon { color: #7fdbff; }
+.stats-card-cyan .stats-card-icon { color: #d6d6d6; }
 .stats-card-green .stats-card-icon { color: #8dffc4; }
 .stats-card-amber .stats-card-icon { color: #ffe09a; }
-.stats-card-violet .stats-card-icon { color: #c9b8ff; }
+.stats-card-violet .stats-card-icon { color: #d6d6d6; }
 .stats-card-rose .stats-card-icon { color: #ffbb96; }

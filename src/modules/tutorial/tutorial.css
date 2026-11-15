@@ -15,7 +15,7 @@
   width: min(480px, 100%);
   padding: 22px;
   border-radius: 16px;
-  color: #dcf1ff;
+  color: #ededed;
   background: rgba(20, 20, 20, 0.52);
   border: 1px solid rgba(255, 255, 255, 0.13);
   backdrop-filter: blur(18px) saturate(100%);
@@ -27,7 +27,7 @@
   margin: 0;
   font-size: 11px;
   letter-spacing: 0.16em;
-  color: #7fdbff;
+  color: #d6d6d6;
 }
 
 .tutorial-card h2 {
@@ -40,7 +40,7 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.55;
-  color: #c5e8f6;
+  color: #e4e4e4;
 }
 
 .tutorial-hint {
@@ -67,7 +67,7 @@
 }
 
 .tutorial-dot-active {
-  background: #6cf0ff;
+  background: #f2f2f2;
 }
 
 .tutorial-buttons {
@@ -80,8 +80,8 @@
   flex: 1;
   padding: 9px 12px;
   background: transparent;
-  color: #d8f7ff;
-  border: 1px solid rgba(62, 224, 255, 0.55);
+  color: #ebebeb;
+  border: 1px solid rgba(230, 230, 230, 0.55);
   border-radius: 999px;
   cursor: pointer;
   font-size: 13px;
@@ -93,11 +93,11 @@
 }
 
 .tutorial-button:not(:disabled):hover {
-  background: rgba(62, 224, 255, 0.12);
+  background: rgba(230, 230, 230, 0.12);
 }
 
 .tutorial-button-primary {
-  background: rgba(62, 224, 255, 0.2);
-  border-color: #6cf0ff;
+  background: rgba(230, 230, 230, 0.2);
+  border-color: #f2f2f2;
   color: #ffffff;
 }
