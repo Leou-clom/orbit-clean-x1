@@ -12,9 +12,11 @@
   pointer-events: none;
 }
 
+/* Durante el puzle: flechas al pulgar izquierdo, ESPACIO al derecho.
+   El centro queda libre para ver el panel de la maniobra. */
 .touch-capture {
-  justify-content: center;
-  gap: 26px;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 .touch-stick-wrap,
@@ -222,6 +224,14 @@
   min-width: 54px;
   min-height: 54px;
   padding: 0;
+}
+
+/* El botón de acción es el que más se pulsa: grande y a la derecha. */
+.touch-capture .touch-key-action {
+  min-width: 104px;
+  min-height: 104px;
+  border-radius: 50%;
+  font-size: 14px;
 }
 
 /* Pantallas bajas (un móvil en horizontal mide poco de alto): todo más compacto. */

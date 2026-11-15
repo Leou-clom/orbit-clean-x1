@@ -260,7 +260,7 @@ export function TouchControls({
           </div>
           <HoldButton code="ArrowDown" label="▼" hint="Abajo" />
         </div>
-        <HoldButton code="Space" label="ACCIÓN" hint="Espacio" className="touch-key-action" />
+        <HoldButton code="Space" label="ESPACIO" hint="Espacio" className="touch-key-action" />
       </div>
     );
   }
