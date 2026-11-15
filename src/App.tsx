@@ -381,17 +381,17 @@ function App() {
       if (keys.has('KeyS')) {
         // Alejarse: separa altitud y fase respecto al objetivo.
         const away = chase && chase.altitudeKm > state.altitudeKm ? -1 : 1;
-        state.altitudeKm = clamp(state.altitudeKm + away * 180 * delta, 220, 35786);
-        state.angleDeg -= 26 * delta;
+        state.altitudeKm = clamp(state.altitudeKm + away * 60 * delta, 220, 35786);
+        state.angleDeg -= 9 * delta;
       }
-      if (keys.has('KeyA')) state.raanDeg = (state.raanDeg - 20 * delta + 360) % 360;
-      if (keys.has('KeyD')) state.raanDeg = (state.raanDeg + 20 * delta) % 360;
-      if (keys.has('ArrowUp')) state.altitudeKm = Math.min(35786, state.altitudeKm + 260 * delta);
-      if (keys.has('ArrowDown')) state.altitudeKm = Math.max(220, state.altitudeKm - 260 * delta);
-      if (keys.has('ArrowLeft')) state.angleDeg -= 45 * delta;
-      if (keys.has('ArrowRight')) state.angleDeg += 45 * delta;
+      if (keys.has('KeyA')) state.raanDeg = (state.raanDeg - 7 * delta + 360) % 360;
+      if (keys.has('KeyD')) state.raanDeg = (state.raanDeg + 7 * delta) % 360;
+      if (keys.has('ArrowUp')) state.altitudeKm = Math.min(35786, state.altitudeKm + 85 * delta);
+      if (keys.has('ArrowDown')) state.altitudeKm = Math.max(220, state.altitudeKm - 85 * delta);
+      if (keys.has('ArrowLeft')) state.angleDeg -= 15 * delta;
+      if (keys.has('ArrowRight')) state.angleDeg += 15 * delta;
 
-      if (approachRef.current) steer(shipRef.current.steerRate * 1.6);
+      if (approachRef.current) steer(shipRef.current.steerRate * 1.5);
 
       if (dodgeUntilRef.current > now) {
         state.altitudeKm = clamp(state.altitudeKm + dodgeDirRef.current * 170 * delta, 220, 35786);

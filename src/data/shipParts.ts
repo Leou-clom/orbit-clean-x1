@@ -167,7 +167,7 @@ export const PARTS: ShipPart[] = [
     massKg: 180,
     powerW: -80,
     costM: 7,
-    effects: { steerRate: 1.6 },
+    effects: { steerRate: 0.55 },
   },
   {
     id: 'thruster-standard',
@@ -177,7 +177,7 @@ export const PARTS: ShipPart[] = [
     massKg: 300,
     powerW: -130,
     costM: 13,
-    effects: { steerRate: 2.4 },
+    effects: { steerRate: 0.8 },
   },
   {
     id: 'thruster-power',
@@ -187,7 +187,7 @@ export const PARTS: ShipPart[] = [
     massKg: 470,
     powerW: -200,
     costM: 21,
-    effects: { steerRate: 3.6 },
+    effects: { steerRate: 1.2 },
   },
 ];
 
@@ -264,7 +264,7 @@ export function summarize(loadout: Loadout, missionAltitudeKm: number): DesignSu
     damageFactor: 1,
     collisionProfile: 1,
     cargoCapacity: 25,
-    steerRate: 2.4,
+    steerRate: 0.8,
   };
   for (const part of chosen) Object.assign(stats, part.effects);
 
