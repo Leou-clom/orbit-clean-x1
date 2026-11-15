@@ -105,11 +105,10 @@
   gap: 10px;
 }
 
-.touch-plane,
-.touch-main {
+.touch-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .touch-key {
@@ -151,11 +150,51 @@
   background: rgba(62, 62, 62, 0.72);
 }
 
-.touch-plane .touch-key {
-  min-width: 52px;
-  min-height: 46px;
+/* Los dos de giro del plano son los que menos se usan: más pequeños. */
+.touch-row .touch-key[aria-label^="Girar"] {
+  min-width: 46px;
+  min-height: 44px;
   font-size: 17px;
   padding: 0;
+}
+
+/* Capturar: la acción que remata la jugada. Se enciende al entrar en alcance. */
+.touch-key-capture {
+  min-width: 86px;
+  min-height: 86px;
+  border-radius: 50%;
+  font-size: 13px;
+  opacity: 0.55;
+}
+
+.touch-key-ready {
+  opacity: 1;
+  background: rgba(61, 255, 154, 0.22);
+  border-color: rgba(61, 255, 154, 0.65);
+  color: #b9ffd8;
+}
+
+/* Piloto automático encendido. */
+.touch-key-on {
+  background: rgba(235, 235, 235, 0.24);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Esquivar, cuando hay algo encima y la maniobra está lista. */
+.touch-key-urgent {
+  background: rgba(255, 138, 61, 0.26);
+  border-color: rgba(255, 138, 61, 0.7);
+  color: #ffd7bf;
+  animation: touch-urgent 900ms ease-in-out infinite;
+}
+
+.touch-key:disabled {
+  opacity: 0.32;
+}
+
+@keyframes touch-urgent {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
 }
 
 .touch-key-action {
@@ -194,5 +233,7 @@
   .touch-key { min-width: 50px; min-height: 50px; font-size: 12px; }
   .touch-key-go { min-width: 70px; min-height: 70px; font-size: 14px; }
   .touch-key-action { min-width: 84px; min-height: 84px; }
-  .touch-plane .touch-key { min-width: 46px; min-height: 40px; }
+  .touch-row .touch-key[aria-label^="Girar"] { min-width: 42px; min-height: 40px; }
+  .touch-key-capture { min-width: 70px; min-height: 70px; font-size: 11px; }
+  .touch-row { gap: 6px; }
 }

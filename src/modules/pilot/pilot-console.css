@@ -296,3 +296,14 @@
     justify-content: center;
   }
 }
+
+/* En táctil las acciones viven en el mando, junto al pulgar. Dejarlas también aquí
+   dentro de un panel con desplazamiento las escondía bajo el corte. */
+[data-touch='on'] .pilot-actions,
+[data-touch='on'] .pilot-help {
+  display: none;
+}
+
+[data-touch='on'] .pilot-console {
+  max-height: 34vh;
+}

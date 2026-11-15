@@ -179,13 +179,67 @@ function HoldButton({ code, label, hint, className = '' }: HoldButtonProps) {
   );
 }
 
+interface TapButtonProps {
+  onPress: () => void;
+  label: string;
+  hint?: string;
+  className?: string;
+  disabled?: boolean;
+}
+
+/** Acción de un solo toque: capturar, aproximación, esquivar. */
+function TapButton({ onPress, label, hint, className = '', disabled = false }: TapButtonProps) {
+  const [down, setDown] = useState(false);
+
+  return (
+    <button
+      type="button"
+      className={`touch-key ${down ? 'touch-key-down' : ''} ${className}`}
+      disabled={disabled}
+      onPointerDown={(event) => {
+        event.preventDefault();
+        if (disabled) return;
+        setDown(true);
+        onPress();
+      }}
+      onPointerUp={(event) => {
+        event.preventDefault();
+        setDown(false);
+      }}
+      onPointerCancel={() => setDown(false)}
+      onContextMenu={(e) => e.preventDefault()}
+      aria-label={hint ?? label}
+    >
+      <span>{label}</span>
+    </button>
+  );
+}
+
 interface TouchControlsProps {
   /** Durante la maniobra de captura hacen falta mandos discretos, no analógicos. */
   capturing: boolean;
   visible: boolean;
+  /** El objetivo está dentro del alcance del brazo. */
+  canCapture: boolean;
+  approachEngaged: boolean;
+  dodgeReady: boolean;
+  threat: boolean;
+  onCapture: () => void;
+  onApproach: () => void;
+  onDodge: () => void;
 }
 
-export function TouchControls({ capturing, visible }: TouchControlsProps) {
+export function TouchControls({
+  capturing,
+  visible,
+  canCapture,
+  approachEngaged,
+  dodgeReady,
+  threat,
+  onCapture,
+  onApproach,
+  onDodge,
+}: TouchControlsProps) {
   // Los ejes no deben quedarse colgados si los mandos se ocultan a media partida.
   useEffect(() => {
     if (!visible || capturing) resetTouchAxes();
@@ -216,13 +270,32 @@ export function TouchControls({ capturing, visible }: TouchControlsProps) {
       <Joystick />
 
       <div className="touch-right">
-        <div className="touch-plane">
+        <div className="touch-row">
           <HoldButton code="KeyA" label="↺" hint="Girar el plano orbital a la izquierda" />
           <HoldButton code="KeyD" label="↻" hint="Girar el plano orbital a la derecha" />
+          <TapButton
+            onPress={onApproach}
+            label="AUTO"
+            hint="Piloto automático de aproximación"
+            className={approachEngaged ? 'touch-key-on' : ''}
+          />
+          <TapButton
+            onPress={onDodge}
+            label="ESQUIVAR"
+            hint="Maniobra evasiva"
+            disabled={!dodgeReady}
+            className={threat && dodgeReady ? 'touch-key-urgent' : ''}
+          />
         </div>
-        <div className="touch-main">
+        <div className="touch-row">
           <HoldButton code="KeyS" label="ALEJAR" hint="Alejarse del objetivo" />
           <HoldButton code="KeyW" label="IR" hint="Volar hacia el objetivo" className="touch-key-go" />
+          <TapButton
+            onPress={onCapture}
+            label="CAPTURAR"
+            hint="Iniciar la maniobra de captura"
+            className={`touch-key-capture ${canCapture ? 'touch-key-ready' : ''}`}
+          />
         </div>
       </div>
     </div>

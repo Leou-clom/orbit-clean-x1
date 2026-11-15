@@ -880,6 +880,13 @@ function App() {
         <TouchControls
           visible={touch && phase === 'playing' && !paused && destroyedAt === null}
           capturing={challenge !== null}
+          canCapture={captureStatus === 'ready'}
+          approachEngaged={approachEngaged}
+          dodgeReady={dodgeReady}
+          threat={threat !== null}
+          onCapture={handleCapture}
+          onApproach={handleApproach}
+          onDodge={handleDodge}
         />
 
         {/* En vertical la escena 3D es injugable: se pide girar antes de nada. */}
