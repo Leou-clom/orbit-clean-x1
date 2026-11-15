@@ -85,10 +85,6 @@ export function MissionBriefing({
             Iniciar misión
           </button>
         </div>
-        <p className="mission-note">
-          Las misiones siguientes se desbloquean al completar el objetivo principal de la actual. El número
-          pequeño es tu mejor puntaje en esa misión.
-        </p>
       </article>
     </div>
   );
@@ -173,6 +169,10 @@ export function MissionResults({ result, hasNextMission, onRetry, onNext, onBrie
               <span>+{result.capturePoints}</span>
             </li>
             <li>
+              <span>Bonus por racha</span>
+              <span>+{result.comboBonus}</span>
+            </li>
+            <li>
               <span>Bonus por rapidez</span>
               <span>+{result.speedBonus}</span>
             </li>
@@ -218,10 +218,6 @@ export function MissionResults({ result, hasNextMission, onRetry, onNext, onBrie
             Siguiente misión
           </button>
         </div>
-        <p className="mission-note">
-          El rango de dificultad describe la misión, no el desempeño del jugador. Todas las cifras salen del
-          juego real de esta partida.
-        </p>
       </article>
     </div>
   );

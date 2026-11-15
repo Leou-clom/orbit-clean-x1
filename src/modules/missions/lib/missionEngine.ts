@@ -157,10 +157,11 @@ export function evaluateMission(args: {
   mistakes: number;
   collisions: number;
   hullIntegrity: number;
+  comboBonus: number;
   elapsedSeconds: number;
   livesRemaining: number;
 }): MissionResult {
-  const { mission, targets, captured, mistakes, collisions, hullIntegrity, elapsedSeconds, livesRemaining } = args;
+  const { mission, targets, captured, mistakes, collisions, hullIntegrity, comboBonus, elapsedSeconds, livesRemaining } = args;
 
   const progress = objectiveProgress(mission, captured);
   const mainObjectiveCompleted = progress >= mission.targetCount;
@@ -218,8 +219,9 @@ export function evaluateMission(args: {
     difficulty: mission.difficulty,
     collisions,
     hullIntegrity,
-    totalScore: Math.max(0, capturePoints + speedBonus + secondaryBonus - mistakePenalty - collisionPenalty),
+    totalScore: Math.max(0, capturePoints + comboBonus + speedBonus + secondaryBonus - mistakePenalty - collisionPenalty),
     capturePoints,
+    comboBonus,
     speedBonus,
     secondaryBonus,
     mistakePenalty,

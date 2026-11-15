@@ -170,8 +170,8 @@ export function PilotConsole({
       </div>
 
       <p className="pilot-help">
-        <strong>W</strong> volar hacia el objetivo · <strong>S</strong> alejarse · A/D plano orbital · ↑/↓
-        altitud · ←/→ fase. Movimiento simulado y acelerado ×90 respecto al tiempo real.
+        <kbd>W</kbd> ir · <kbd>S</kbd> alejar · <kbd>A</kbd><kbd>D</kbd> plano · <kbd>↑↓</kbd> altitud ·{' '}
+        <kbd>←→</kbd> fase
       </p>
     </section>
   );

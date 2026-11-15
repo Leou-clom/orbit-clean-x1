@@ -76,6 +76,7 @@ export interface MissionResult {
   hullIntegrity: number;
   totalScore: number;
   capturePoints: number;
+  comboBonus: number;
   speedBonus: number;
   secondaryBonus: number;
   mistakePenalty: number;

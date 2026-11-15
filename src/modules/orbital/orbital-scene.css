@@ -19,14 +19,16 @@
   width: 244px;
   max-height: calc(100% - 420px);
   padding: 14px;
-  background: rgba(6, 16, 27, 0.9);
   color: #dcf1ff;
-  border: 1px solid rgba(62, 224, 255, 0.3);
   border-radius: 12px;
   overflow-y: auto;
   font-size: 13px;
-  backdrop-filter: blur(2px);
   animation: info-in 180ms ease-out;
+  background: rgba(10, 22, 36, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 @keyframes info-in {

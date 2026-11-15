@@ -10,7 +10,9 @@ import { AchievementToasts } from './modules/achievements/AchievementsPanel';
 import { evaluateAchievements } from './modules/achievements/achievements';
 import { OptionsMenu } from './modules/options/OptionsMenu';
 import { Tutorial } from './modules/tutorial/Tutorial';
+import { ComboHud, type ScorePopup } from './modules/stats/ComboHud';
 import { CaptureChallenge } from './modules/capture/CaptureChallenge';
+import './styles/glass.css';
 import { challengeCountFor, pickChallenges, type ChallengeKind } from './modules/capture/captureChallenges';
 import { generateDebrisPopulation } from './data/debrisPopulation';
 import { pickAstronaut } from './data/astronauts';
@@ -52,6 +54,11 @@ const DODGE_COOLDOWN_MS = 4000;
 const HULL_DAMAGE: Record<DebrisSizeClass, number> = { small: 3, medium: 6, large: 10 };
 
 const MOVEMENT_KEYS = ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+
+// Cada 3 capturas seguidas sube medio multiplicador, con tope en ×3.
+function multiplierFor(streak: number): number {
+  return Math.min(3, 1 + Math.floor(streak / 3) * 0.5);
+}
 
 const INITIAL_CREW: CrewStatus = {
   heartRateBpm: 72,
@@ -111,6 +118,9 @@ function App() {
   const [hitFlash, setHitFlash] = useState(false);
   const [threat, setThreat] = useState<{ id: string; name: string; distanceKm: number } | null>(null);
   const [dodgeReady, setDodgeReady] = useState(true);
+  const [streak, setStreak] = useState(0);
+  const [bonusPoints, setBonusPoints] = useState(0);
+  const [popups, setPopups] = useState<ScorePopup[]>([]);
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const [crew, setCrew] = useState<CrewStatus>(INITIAL_CREW);
 
@@ -139,6 +149,8 @@ function App() {
   const dodgeUntilRef = useRef(0);
   const dodgeReadyAtRef = useRef(0);
   const dodgeDirRef = useRef(1);
+  const popupIdRef = useRef(0);
+  const streakRef = useRef(0);
 
   const capturedIds = useMemo(() => new Set(captured.map((object) => object.id)), [captured]);
   const targetIds = useMemo(() => new Set(targets.map((object) => object.id)), [targets]);
@@ -213,6 +225,7 @@ function App() {
         mistakes,
         collisions,
         hullIntegrity: hull,
+        comboBonus: bonusPoints,
         elapsedSeconds: elapsed,
         livesRemaining: hull > 0 && mainCompleted ? 1 : 0,
       });
@@ -253,7 +266,7 @@ function App() {
         return next;
       });
     },
-    [mission, targets, captured, mistakes, collisions, missionsCompleted, totalCaptures, totalLargeCaptures]
+    [mission, targets, captured, mistakes, collisions, bonusPoints, missionsCompleted, totalCaptures, totalLargeCaptures]
   );
 
   const finishRef = useRef(finishMission);
@@ -449,6 +462,8 @@ function App() {
         hullRef.current = Math.max(0, hullRef.current - damage);
         setHullIntegrity(hullRef.current);
         setCollisions((value) => value + 1);
+        setStreak(0);
+        streakRef.current = 0;
         setHitFlash(true);
         setCrew((current) => {
           const next: CrewStatus = {
@@ -518,6 +533,10 @@ function App() {
       setApproachEngaged(false);
       setCapture(null);
       setChallenge(null);
+      setStreak(0);
+      streakRef.current = 0;
+      setBonusPoints(0);
+      setPopups([]);
       setHitFlash(false);
       setResult(null);
       setSelectedObjectId(null);
@@ -547,6 +566,8 @@ function App() {
     const target = nearestRef.current;
     if (!target || distanceToTarget(target) > CAPTURE_RANGE_KM) {
       setMistakes((value) => value + 1);
+      setStreak(0);
+      streakRef.current = 0;
       setCrew((current) => ({
         ...current,
         stressPercent: clamp(current.stressPercent + 4, 12, 80),
@@ -580,6 +601,18 @@ function App() {
     );
     setCapture({ objectId: active.target.id, at: performance.now() });
 
+    // Racha: capturas seguidas sin fallar ni chocar suben el multiplicador.
+    const nextStreak = streakRef.current + 1;
+    streakRef.current = nextStreak;
+    const multiplier = multiplierFor(nextStreak);
+    const earned = Math.round(active.target.points * multiplier);
+    setStreak(nextStreak);
+    popupIdRef.current += 1;
+    const popupId = popupIdRef.current;
+    setPopups((current) => [...current, { id: popupId, points: earned, multiplier }]);
+    window.setTimeout(() => setPopups((current) => current.filter((item) => item.id !== popupId)), 800);
+    setBonusPoints((current) => current + (earned - active.target.points));
+
     // Cada retirada libera masa y permite reparar: la bodega recupera un 5 % de casco.
     hullRef.current = Math.min(100, hullRef.current + 5);
     setHullIntegrity(hullRef.current);
@@ -595,6 +628,8 @@ function App() {
   const handleChallengeFail = useCallback(() => {
     setChallenge(null);
     setMistakes((value) => value + 1);
+    setStreak(0);
+    streakRef.current = 0;
     setCrew((current) => ({
       ...current,
       stressPercent: clamp(current.stressPercent + 7, 12, 80),
@@ -762,6 +797,15 @@ function App() {
           collisions={collisions}
           avatarState={avatarState}
         />
+
+        {phase === 'playing' ? (
+          <ComboHud
+            streak={streak}
+            multiplier={multiplierFor(streak)}
+            score={capturePoints + bonusPoints}
+            popups={popups}
+          />
+        ) : null}
 
         {challenge ? (
           <CaptureChallenge
