@@ -101,3 +101,11 @@
   border-color: #f2f2f2;
   color: #ffffff;
 }
+
+/* Móvil: menos relleno y botones apilados. */
+@media (max-width: 680px) {
+  .tutorial-overlay { padding: 12px; }
+  .tutorial-panel { padding: 16px; }
+  .tutorial-actions { gap: 8px; }
+  .tutorial-actions button { min-height: 44px; }
+}

@@ -1,0 +1,74 @@
+/* Aviso a pantalla completa cuando el móvil está en vertical. */
+.landscape-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.landscape-card {
+  max-width: 320px;
+  text-align: center;
+  padding: 26px 22px;
+  border-radius: 18px;
+  background: rgba(20, 20, 20, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+.landscape-icon {
+  color: #ededed;
+  /* Se inclina como invitando al giro. */
+  animation: landscape-tip 2.4s ease-in-out infinite;
+}
+
+.landscape-card h2 {
+  margin: 12px 0 8px;
+  font-size: 21px;
+  color: #ffffff;
+}
+
+.landscape-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #ababab;
+}
+
+.landscape-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 0 20px;
+  min-height: 48px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(235, 235, 235, 0.16);
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.landscape-button:active {
+  background: rgba(235, 235, 235, 0.3);
+}
+
+.landscape-note {
+  margin-top: 14px !important;
+  font-size: 12px !important;
+  color: #8a8a8a !important;
+}
+
+@keyframes landscape-tip {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-82deg); }
+}

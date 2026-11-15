@@ -244,3 +244,16 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* Móvil: una columna, menos relleno y botones con área táctil cómoda. */
+@media (max-width: 680px) {
+  .design-overlay { padding: 10px; }
+  .design-panel { padding: 14px; }
+  .design-slots { grid-template-columns: 1fr; }
+  .design-resources { grid-template-columns: 1fr; gap: 8px; }
+  .design-options { grid-template-columns: 1fr; }
+  .design-option { min-height: 52px; }
+  .design-button { min-height: 46px; }
+  .design-footer { flex-direction: column-reverse; gap: 8px; }
+  .design-footer .design-button { width: 100%; }
+}

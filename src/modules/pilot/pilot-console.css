@@ -247,3 +247,52 @@
   color: #a3a3a3;
   line-height: 1.5;
 }
+
+/* Móvil en vertical: la consola pasa a ser una franja superior a todo el ancho,
+   con el texto más pequeño y altura limitada para no tapar la escena. */
+@media (max-width: 680px) {
+  .pilot-console {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-height: 40vh;
+    padding: 10px;
+    padding-right: 86px; /* hueco para el botón de Opciones */
+    font-size: 12px;
+    gap: 7px;
+  }
+
+  .pilot-title { font-size: 15px; }
+  .pilot-kicker { font-size: 9px; }
+
+  /* Los indicadores se reparten en rejilla en vez de apilarse. */
+  .pilot-readouts,
+  .pilot-gauges {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .pilot-readout,
+  .pilot-gauge { padding: 6px 7px; }
+  .pilot-gauge-label { font-size: 8px; }
+  .pilot-gauge-value,
+  .pilot-readout { font-size: 12px; }
+
+  /* Los atajos de teclado no sirven de nada sin teclado. */
+  .pilot-help { display: none; }
+
+  /* Acciones en fila, con área táctil suficiente. */
+  .pilot-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .pilot-button {
+    min-height: 44px;
+    font-size: 12px;
+    justify-content: center;
+  }
+}
