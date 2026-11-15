@@ -125,6 +125,17 @@ export function OptionsMenu({
                 Los signos vitales del astronauta son sintéticos para la demostración. El nombre es un
                 homenaje a una persona real y los datos no la representan.
               </p>
+              <h3>Créditos</h3>
+              <p>
+                Los modelos 3D de las naves proceden de <strong>NASA 3D Resources</strong> (sondas Dawn
+                y Clementine). Las texturas de la Tierra y la Luna son de los ejemplos de{' '}
+                <strong>three.js</strong>, con licencia MIT. Las bandas de densidad orbital siguen los
+                datos publicados por <strong>NASA ODPO</strong> y el Space Environment Report de la{' '}
+                <strong>ESA</strong>.
+              </p>
+              <p>
+                Este es un proyecto educativo sin ánimo de lucro. NASA no lo patrocina ni lo respalda.
+              </p>
               <button type="button" className="options-button" onClick={onShowTutorial}>
                 Ver el tutorial otra vez
               </button>
