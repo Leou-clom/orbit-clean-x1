@@ -189,3 +189,14 @@
   font-size: 13px;
   color: #ffffff;
 }
+
+/* Móvil: los mandos de la maniobra ocupan el borde inferior,
+   así que el panel sube para no quedar debajo del dedo. */
+@media (max-width: 680px) {
+  .capture-challenge {
+    bottom: auto;
+    top: 46vh;
+    width: calc(100% - 20px);
+    padding: 12px 14px;
+  }
+}

@@ -2,6 +2,8 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import { OrbitalScene } from './modules/orbital/OrbitalScene';
 import { PilotConsole, type CaptureStatus } from './modules/pilot/PilotConsole';
+import { TouchControls } from './modules/pilot/TouchControls';
+import { isTouchDevice } from './lib/pointer';
 import { MissionBriefing, MissionResults } from './modules/missions/MissionOverlay';
 import { HealthPanel } from './modules/health/HealthPanel';
 import { VitalsHud } from './modules/crew/VitalsHud';
@@ -92,6 +94,8 @@ function moodFrom(status: CrewStatus): string {
 
 function App() {
   const [qualityLevel, setQualityLevel] = useState<QualityLevel>(() => detectQuality());
+  // Se decide una vez: el tipo de puntero no cambia a mitad de partida.
+  const [touch] = useState(() => isTouchDevice());
   const quality = QUALITY[qualityLevel];
   const population = useMemo(() => generateDebrisPopulation(quality.debrisCount), [quality.debrisCount]);
   const astronaut = useMemo(() => pickAstronaut(), []);
@@ -859,6 +863,12 @@ function App() {
             onFail={handleChallengeFail}
           />
         ) : null}
+
+        {/* Mandos en pantalla: sin ellos el juego es injugable con el dedo. */}
+        <TouchControls
+          visible={touch && phase === 'playing' && !paused && destroyedAt === null}
+          capturing={challenge !== null}
+        />
 
         {hitFlash ? <div className="dashboard-damage" /> : null}
 

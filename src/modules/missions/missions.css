@@ -251,3 +251,11 @@
 .mission-missed {
   color: #a3a3a3;
 }
+
+/* Móvil: menos relleno y botones grandes para el dedo. */
+@media (max-width: 680px) {
+  .mission-overlay { padding: 10px; }
+  .mission-panel { padding: 14px; }
+  .mission-actions { flex-direction: column-reverse; gap: 8px; }
+  .mission-actions button { width: 100%; min-height: 46px; }
+}

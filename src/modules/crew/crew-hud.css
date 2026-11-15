@@ -377,3 +377,31 @@
     width: auto;
   }
 }
+
+/* Móvil: abajo a la izquierda van los mandos táctiles, así que el panel de
+   tripulación se reduce a lo imprescindible y se va al borde inferior derecho.
+   El detalle completo sigue en Esc → Tripulación. */
+@media (max-width: 680px) {
+  .crew-hud {
+    left: auto;
+    right: 8px;
+    bottom: auto;
+    top: 42vh;
+    width: 138px;
+    padding: 7px 8px;
+    gap: 5px;
+  }
+
+  /* El nombre y el estado de animo no caben; quedan en Esc -> Tripulacion. */
+  .avatar-caption { display: none; }
+  .avatar-svg { width: 42px; height: 42px; }
+
+  .crew-hud-pulse { display: none; }
+  .crew-hud-impacts { font-size: 9px; white-space: nowrap; }
+
+  /* Solo las dos primeras barras: casco y pulso. El resto, en el menú. */
+  .vitals-list > *:nth-child(n + 3) { display: none; }
+
+  .vital-label { font-size: 9px; }
+  .vital-value { font-size: 9px; }
+}

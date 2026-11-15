@@ -1,0 +1,155 @@
+/* Mandos en pantalla para jugar con el dedo. Solo aparecen en dispositivos táctiles. */
+
+.touch-pad,
+.touch-capture {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 6;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 14px calc(14px + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+
+.touch-capture {
+  justify-content: center;
+  gap: 26px;
+}
+
+.touch-cluster,
+.touch-dpad,
+.touch-plane,
+.touch-capture-arrows {
+  pointer-events: auto;
+}
+
+.touch-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.touch-cluster-right {
+  align-items: center;
+  gap: 10px;
+}
+
+/* --- botón base --- */
+
+.touch-key {
+  display: grid;
+  place-items: center;
+  min-width: 58px;
+  min-height: 58px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(20, 20, 20, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ededed;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  /* Sin retardo de 300 ms ni menú de selección al mantener pulsado. */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 90ms ease, transform 90ms ease;
+}
+
+.touch-key-down {
+  background: rgba(235, 235, 235, 0.26);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(0.95);
+}
+
+.touch-key-go {
+  min-width: 74px;
+  min-height: 74px;
+  border-radius: 50%;
+  font-size: 15px;
+  background: rgba(60, 60, 60, 0.72);
+}
+
+.touch-key-action {
+  min-width: 108px;
+  min-height: 108px;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+/* --- cruceta de órbita --- */
+
+.touch-dpad {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(3, 52px);
+  gap: 4px;
+}
+
+.touch-dpad .touch-key {
+  min-width: 52px;
+  min-height: 52px;
+  padding: 0;
+  font-size: 15px;
+}
+
+.touch-dpad-up { grid-area: 1 / 2; }
+.touch-dpad-left { grid-area: 2 / 1; }
+.touch-dpad-right { grid-area: 2 / 3; }
+.touch-dpad-down { grid-area: 3 / 2; }
+
+.touch-dpad-center {
+  grid-area: 2 / 2;
+  display: grid;
+  place-items: center;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: #8a8a8a;
+  pointer-events: none;
+}
+
+.touch-plane {
+  display: flex;
+  gap: 8px;
+}
+
+.touch-plane .touch-key {
+  min-width: 52px;
+  min-height: 44px;
+  font-size: 17px;
+}
+
+/* --- maniobra de captura --- */
+
+.touch-capture-arrows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.touch-capture-row {
+  display: flex;
+  gap: 5px;
+}
+
+.touch-capture .touch-key {
+  min-width: 54px;
+  min-height: 54px;
+  padding: 0;
+}
+
+/* Pantallas bajas: todo un poco más compacto para no tapar la escena. */
+@media (max-height: 460px) {
+  .touch-key { min-width: 48px; min-height: 48px; font-size: 12px; }
+  .touch-key-go { min-width: 60px; min-height: 60px; }
+  .touch-key-action { min-width: 84px; min-height: 84px; }
+  .touch-dpad { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(3, 44px); }
+  .touch-dpad .touch-key { min-width: 44px; min-height: 44px; }
+}

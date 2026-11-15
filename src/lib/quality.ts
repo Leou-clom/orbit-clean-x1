@@ -42,6 +42,13 @@ export const QUALITY: Record<QualityLevel, QualitySettings> = {
 
 // Los equipos básicos suelen tener pocos núcleos y gráfica integrada.
 export function detectQuality(): QualityLevel {
+  // Un móvil puede declarar 8 núcleos y aun así no mover 620 objetos a 60 fps:
+  // su GPU y su límite térmico mandan más que el número de núcleos.
+  const coarsePointer =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  if (coarsePointer) return 'bajo';
+
   const cores = navigator.hardwareConcurrency ?? 4;
   if (cores <= 4) return 'bajo';
   if (cores <= 8) return 'medio';
