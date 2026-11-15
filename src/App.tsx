@@ -119,6 +119,8 @@ function App() {
   // el jugador pierde el control y la escena muestra el pecio antes de los resultados.
   const [destroyedAt, setDestroyedAt] = useState<number | null>(null);
   const destroyedAtRef = useRef<number | null>(null);
+  // Por qué se destruyó la nave: cambia el aviso en pantalla, no la animación.
+  const [destroyCause, setDestroyCause] = useState<'hull' | 'abort'>('hull');
   const [timeLeft, setTimeLeft] = useState(MISSIONS[0].timeLimitSeconds);
   const [result, setResult] = useState<MissionResult | null>(null);
 
@@ -503,6 +505,7 @@ function App() {
         setHullIntegrity(hullRef.current);
         if (hullRef.current <= 0 && destroyedAtRef.current === null) {
           destroyedAtRef.current = now;
+          setDestroyCause('hull');
           setDestroyedAt(now);
         }
         setCollisions((value) => value + 1);
@@ -574,6 +577,7 @@ function App() {
       setHullIntegrity(startHull);
       destroyedAtRef.current = null;
       setDestroyedAt(null);
+      setDestroyCause('hull');
       setTimeLeft(next.timeLimitSeconds);
       setStation({ ...start });
       setNearest(null);
@@ -718,9 +722,15 @@ function App() {
     }));
   }, [running]);
 
+  // Abortar es hundir la nave a propósito: se destruye en pantalla igual que si el
+  // casco llegara a 0, y los resultados llegan cuando acaba la animación.
   const handleAbort = useCallback(() => {
-    if (phase !== 'playing') return;
-    finishRef.current(false);
+    if (phase !== 'playing' || destroyedAtRef.current !== null) return;
+    hullRef.current = 0;
+    setHullIntegrity(0);
+    destroyedAtRef.current = performance.now();
+    setDestroyCause('abort');
+    setDestroyedAt(destroyedAtRef.current);
   }, [phase]);
 
   const togglePause = useCallback(() => {
@@ -809,13 +819,16 @@ function App() {
           quality={quality}
         />
 
-        {destroyedAt !== null ? (
+        {destroyedAt !== null && phase === 'playing' ? (
           <div className="destroyed-banner" role="status">
-            <p className="destroyed-kicker">CASCO AL 0 %</p>
+            <p className="destroyed-kicker">
+              {destroyCause === 'abort' ? 'MISIÓN ABORTADA' : 'CASCO AL 0 %'}
+            </p>
             <h2>Nave destruida</h2>
             <p className="destroyed-note">
-              Los restos quedan en órbita como nueva basura espacial. Así empiezan las cascadas de
-              fragmentos que el juego te pide limpiar.
+              {destroyCause === 'abort'
+                ? 'Abandonar la nave en órbita no la hace desaparecer: queda ahí como basura, igual que los fragmentos que venías a retirar.'
+                : 'Los restos quedan en órbita como nueva basura espacial. Así empiezan las cascadas de fragmentos que el juego te pide limpiar.'}
             </p>
           </div>
         ) : null}
