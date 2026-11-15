@@ -48,6 +48,8 @@ const WARNING_RADIUS_UNITS = kmToUnits(520);
 const WARNING_RADIUS_SQ = WARNING_RADIUS_UNITS * WARNING_RADIUS_UNITS;
 const HIT_COOLDOWN_MS = 2500;
 const GRACE_AFTER_HIT_MS = 2200;
+// Lo que dura la destrucción de la nave en pantalla antes de mostrar los resultados.
+const DESTRUCTION_MS = 3400;
 const DODGE_DURATION_MS = 900;
 const DODGE_COOLDOWN_MS = 4000;
 
@@ -107,6 +109,10 @@ function App() {
   const [mistakes, setMistakes] = useState(0);
   const [collisions, setCollisions] = useState(0);
   const [hullIntegrity, setHullIntegrity] = useState(100);
+  // Instante en que el casco llegó a 0. Mientras no sea null la nave está explotando:
+  // el jugador pierde el control y la escena muestra el pecio antes de los resultados.
+  const [destroyedAt, setDestroyedAt] = useState<number | null>(null);
+  const destroyedAtRef = useRef<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(MISSIONS[0].timeLimitSeconds);
   const [result, setResult] = useState<MissionResult | null>(null);
 
@@ -145,7 +151,7 @@ function App() {
   useEffect(() => {
     shipRef.current = ship;
   });
-  const running = phase === 'playing' && !paused;
+  const running = phase === 'playing' && !paused && destroyedAt === null;
 
   const keysRef = useRef<Set<string>>(new Set());
   const activeTargetsRef = useRef<OrbitalDebris[]>([]);
@@ -297,10 +303,14 @@ function App() {
     if (progress >= mission.targetCount) finishRef.current(true);
   }, [phase, progress, mission.targetCount]);
 
+  // Casco a 0: la nave estalla. Se deja correr la animación del pecio antes de
+  // pasar a resultados, para que se vea lo que ha ocurrido. El disparo se hace
+  // en el bucle de juego, donde el casco llega a 0, no en un efecto.
   useEffect(() => {
-    if (phase !== 'playing') return;
-    if (hullIntegrity <= 0) finishRef.current(false);
-  }, [phase, hullIntegrity]);
+    if (phase !== 'playing' || destroyedAt === null) return;
+    const id = window.setTimeout(() => finishRef.current(false), DESTRUCTION_MS);
+    return () => window.clearTimeout(id);
+  }, [phase, destroyedAt]);
 
   useEffect(() => {
     if (!running) return;
@@ -475,6 +485,10 @@ function App() {
 
         hullRef.current = Math.max(0, hullRef.current - damage);
         setHullIntegrity(hullRef.current);
+        if (hullRef.current <= 0 && destroyedAtRef.current === null) {
+          destroyedAtRef.current = now;
+          setDestroyedAt(now);
+        }
         setCollisions((value) => value + 1);
         setStreak(0);
         streakRef.current = 0;
@@ -542,6 +556,8 @@ function App() {
       setMistakes(0);
       setCollisions(0);
       setHullIntegrity(startHull);
+      destroyedAtRef.current = null;
+      setDestroyedAt(null);
       setTimeLeft(next.timeLimitSeconds);
       setStation({ ...start });
       setNearest(null);
@@ -773,8 +789,20 @@ function App() {
           showStation
           capture={captureEvent}
           followStation={phase === 'playing'}
+          destroyedAt={destroyedAt}
           quality={quality}
         />
+
+        {destroyedAt !== null ? (
+          <div className="destroyed-banner" role="status">
+            <p className="destroyed-kicker">CASCO AL 0 %</p>
+            <h2>Nave destruida</h2>
+            <p className="destroyed-note">
+              Los restos quedan en órbita como nueva basura espacial. Así empiezan las cascadas de
+              fragmentos que el juego te pide limpiar.
+            </p>
+          </div>
+        ) : null}
 
         <div className="dashboard-brand">
           <h1>ORBIT-CLEAN X</h1>

@@ -14,6 +14,7 @@ import { OrbitRing } from './components/OrbitRing';
 import { DebrisField } from './components/DebrisField';
 import { InfoPanel } from './components/InfoPanel';
 import { Station } from './components/Station';
+import { Wreck } from './components/Wreck';
 import { SceneRig } from './components/SceneRig';
 import { TargetMarker } from './components/TargetMarker';
 import { HeroModel } from './components/HeroModel';
@@ -30,6 +31,8 @@ interface OrbitalSceneProps {
   showStation?: boolean;
   capture?: CaptureEvent | null;
   followStation?: boolean;
+  /** Instante (performance.now()) en que el casco llegó a 0: dispara la explosión. */
+  destroyedAt?: number | null;
   quality: QualitySettings;
 }
 
@@ -45,6 +48,7 @@ export function OrbitalScene({
   showStation = false,
   capture = null,
   followStation = false,
+  destroyedAt = null,
   quality,
 }: OrbitalSceneProps) {
   const renderData = useMemo(() => objects.map(toRenderData), [objects]);
@@ -83,8 +87,12 @@ export function OrbitalScene({
 
         {quality.detailedModels && selected ? <HeroModel target={selected} /> : null}
 
-        {showStation ? (
+        {showStation && destroyedAt === null ? (
           <Station positionRef={stationPositionRef} capture={capture} detailed={quality.detailedModels} />
+        ) : null}
+
+        {showStation && destroyedAt !== null ? (
+          <Wreck positionRef={stationPositionRef} startedAt={destroyedAt} />
         ) : null}
 
         <SceneRig follow={followStation && showStation} stationPositionRef={stationPositionRef} />

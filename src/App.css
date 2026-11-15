@@ -75,3 +75,48 @@
     top: 56px;
   }
 }
+
+/* Aviso que acompaña a la destrucción de la nave, mientras se ve el pecio en la escena. */
+.destroyed-banner {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  pointer-events: none;
+  max-width: 460px;
+  padding: 20px 26px;
+  text-align: center;
+  border-radius: 16px;
+  background: rgba(16, 16, 16, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  animation: destroyed-in 520ms ease-out both;
+}
+
+.destroyed-kicker {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #ff8a3d;
+}
+
+.destroyed-banner h2 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  color: #ffffff;
+}
+
+.destroyed-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #ababab;
+}
+
+@keyframes destroyed-in {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
