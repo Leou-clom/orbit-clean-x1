@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -375,7 +375,7 @@ export function HealthPanel({ status, onStatusChange }: HealthPanelProps) {
     </section>
   );
 }
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   panel: {
     background: "radial-gradient(circle at top left, #12324a 0%, #071018 42%, #05090e 100%)",
     color: "#e7f6ff",
