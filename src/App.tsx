@@ -12,6 +12,8 @@ import { OptionsMenu } from './modules/options/OptionsMenu';
 import { Tutorial } from './modules/tutorial/Tutorial';
 import { ComboHud, type ScorePopup } from './modules/stats/ComboHud';
 import { CaptureChallenge } from './modules/capture/CaptureChallenge';
+import { MissionDesign } from './modules/design/MissionDesign';
+import { DEFAULT_LOADOUT, summarize, type Loadout } from './data/shipParts';
 import './styles/glass.css';
 import { challengeCountFor, pickChallenges, type ChallengeKind } from './modules/capture/captureChallenges';
 import { generateDebrisPopulation } from './data/debrisPopulation';
@@ -40,8 +42,6 @@ import { toRenderData } from './modules/orbital/lib/orbitalRenderData';
 import type { StationState } from './modules/orbital/types';
 import type { Achievement, CrewStatus, OrbitalDebris, DebrisSizeClass, MissionResult } from './types/orbital';
 
-const CAPTURE_RANGE_KM = 150;
-const CARGO_CAPACITY = 70;
 const COLLISION_RADIUS_UNITS = kmToUnits(105);
 const COLLISION_RADIUS_SQ = COLLISION_RADIUS_UNITS * COLLISION_RADIUS_UNITS;
 const WARNING_RADIUS_UNITS = kmToUnits(520);
@@ -71,7 +71,7 @@ const INITIAL_CREW: CrewStatus = {
 
 const MemoHealthPanel = memo(HealthPanel);
 
-type Phase = 'briefing' | 'playing' | 'results';
+type Phase = 'briefing' | 'design' | 'playing' | 'results';
 
 const stationPoint = { x: 0, y: 0, z: 0 };
 const prevStationPoint = { x: 0, y: 0, z: 0 };
@@ -118,6 +118,7 @@ function App() {
   const [hitFlash, setHitFlash] = useState(false);
   const [threat, setThreat] = useState<{ id: string; name: string; distanceKm: number } | null>(null);
   const [dodgeReady, setDodgeReady] = useState(true);
+  const [loadout, setLoadout] = useState<Loadout>(DEFAULT_LOADOUT);
   const [streak, setStreak] = useState(0);
   const [bonusPoints, setBonusPoints] = useState(0);
   const [popups, setPopups] = useState<ScorePopup[]>([]);
@@ -133,6 +134,17 @@ function App() {
   const [missionsCompleted, setMissionsCompleted] = useState(0);
 
   const mission = MISSIONS[missionIndex];
+  // La nave que el jugador diseñó manda sobre las constantes: alcance, casco, bodega y velocidad.
+  const designAltitudeKm = useMemo(
+    () => selectMissionTargets(mission, population)[0]?.altitudeKm ?? 500,
+    [mission, population]
+  );
+  const design = useMemo(() => summarize(loadout, designAltitudeKm), [loadout, designAltitudeKm]);
+  const ship = design.stats;
+  const shipRef = useRef(ship);
+  useEffect(() => {
+    shipRef.current = ship;
+  });
   const running = phase === 'playing' && !paused;
 
   const keysRef = useRef<Set<string>>(new Set());
@@ -365,7 +377,7 @@ function App() {
         state.angleDeg += shortestAngleDeg(state.angleDeg, chaseAngle) * gain;
       };
 
-      if (keys.has('KeyW')) steer(2.4);
+      if (keys.has('KeyW')) steer(shipRef.current.steerRate);
       if (keys.has('KeyS')) {
         // Alejarse: separa altitud y fase respecto al objetivo.
         const away = chase && chase.altitudeKm > state.altitudeKm ? -1 : 1;
@@ -379,7 +391,7 @@ function App() {
       if (keys.has('ArrowLeft')) state.angleDeg -= 45 * delta;
       if (keys.has('ArrowRight')) state.angleDeg += 45 * delta;
 
-      if (approachRef.current) steer(4.5);
+      if (approachRef.current) steer(shipRef.current.steerRate * 1.6);
 
       if (dodgeUntilRef.current > now) {
         state.altitudeKm = clamp(state.altitudeKm + dodgeDirRef.current * 170 * delta, 220, 35786);
@@ -450,14 +462,16 @@ function App() {
           }
         }
 
-        if (closestSq > COLLISION_RADIUS_SQ || invulnerable) continue;
+        const profile = shipRef.current.collisionProfile;
+        if (closestSq > COLLISION_RADIUS_SQ * profile * profile || invulnerable) continue;
 
         lastHitRef.current.set(hazard.id, now);
         graceUntilRef.current = now + GRACE_AFTER_HIT_MS;
         const damage =
           HULL_DAMAGE[hazard.sizeClass] *
           (1 + (hazard.resistance - 1) * 0.25) *
-          (hazard.type === 'asteroid' ? 1.5 : 1);
+          (hazard.type === 'asteroid' ? 1.5 : 1) *
+          shipRef.current.damageFactor;
 
         hullRef.current = Math.max(0, hullRef.current - damage);
         setHullIntegrity(hullRef.current);
@@ -510,11 +524,12 @@ function App() {
     (index: number) => {
       const next = MISSIONS[index];
       const picked = selectMissionTargets(next, population);
+      const startHull = summarize(loadout, picked[0]?.altitudeKm ?? 500).stats.hull;
       const start = missionStationStart(picked);
       resetStation(start);
       nearestRef.current = null;
       approachRef.current = false;
-      hullRef.current = 100;
+      hullRef.current = startHull;
       lastHitRef.current.clear();
       missionStartRef.current = performance.now();
       sceneClock.seconds = 0;
@@ -526,7 +541,7 @@ function App() {
       setCaptured([]);
       setMistakes(0);
       setCollisions(0);
-      setHullIntegrity(100);
+      setHullIntegrity(startHull);
       setTimeLeft(next.timeLimitSeconds);
       setStation({ ...start });
       setNearest(null);
@@ -545,7 +560,7 @@ function App() {
       setAttempts((current) => ({ ...current, [next.id]: (current[next.id] ?? 0) + 1 }));
       setPhase('playing');
     },
-    [population]
+    [population, loadout]
   );
 
   const distanceToTarget = useCallback((target: OrbitalDebris) => {
@@ -564,7 +579,7 @@ function App() {
   const handleCapture = useCallback(() => {
     if (!running || challenge) return;
     const target = nearestRef.current;
-    if (!target || distanceToTarget(target) > CAPTURE_RANGE_KM) {
+    if (!target || distanceToTarget(target) > shipRef.current.captureRangeKm) {
       setMistakes((value) => value + 1);
       setStreak(0);
       streakRef.current = 0;
@@ -591,7 +606,7 @@ function App() {
     setChallenge(null);
     if (!active) return;
 
-    if (distanceToTarget(active.target) > CAPTURE_RANGE_KM) {
+    if (distanceToTarget(active.target) > shipRef.current.captureRangeKm) {
       setMistakes((value) => value + 1);
       return;
     }
@@ -721,7 +736,7 @@ function App() {
     return () => window.clearTimeout(id);
   }, [hitFlash]);
 
-  const inRange = nearest !== null && nearest.distanceKm <= CAPTURE_RANGE_KM;
+  const inRange = nearest !== null && nearest.distanceKm <= ship.captureRangeKm;
   const captureStatus: CaptureStatus = capture
     ? 'capturing'
     : !nearest
@@ -777,7 +792,7 @@ function App() {
           approachEngaged={approachEngaged}
           progress={progress}
           capturedCount={captured.length}
-          cargoCapacity={CARGO_CAPACITY}
+          cargoCapacity={ship.cargoCapacity}
           mistakes={mistakes}
           capturePoints={capturePoints}
           timeLeft={timeLeft}
@@ -829,8 +844,19 @@ function App() {
             bestScores={bestScores}
             attempts={attempts[mission.id] ?? 0}
             onSelectMission={setMissionIndex}
-            onStart={() => startMission(missionIndex)}
+            onStart={() => setPhase('design')}
             onShowTutorial={() => setShowTutorial(true)}
+          />
+        ) : null}
+
+        {phase === 'design' && !showTutorial && !paused ? (
+          <MissionDesign
+            mission={mission}
+            missionAltitudeKm={designAltitudeKm}
+            loadout={loadout}
+            onChange={setLoadout}
+            onLaunch={() => startMission(missionIndex)}
+            onBack={() => setPhase('briefing')}
           />
         ) : null}
 

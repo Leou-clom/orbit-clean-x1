@@ -15,8 +15,12 @@ npm run lint
 
 ## Cómo se juega
 
-Pilotas una estación de servicio orbital con un brazo robótico y retiras basura espacial
-antes de que se agote el tiempo de cada misión.
+Antes de cada misión diseñas la nave: brazo, blindaje, paneles, bodega, propulsión y
+lanzador. Ninguna opción es gratis — más blindaje pesa más, y más masa obliga a un lanzador
+más caro o te deja sin alcance para la zona de trabajo. Hay que cuadrar masa, potencia y
+presupuesto antes de poder lanzar.
+
+Después pilotas la estación y retiras basura espacial antes de que se agote el tiempo.
 
 - `W` / `S` — subir o bajar la altitud
 - `A` / `D` — girar el plano orbital
