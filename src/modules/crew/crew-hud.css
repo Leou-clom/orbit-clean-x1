@@ -1,0 +1,376 @@
+.crew-hud {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 5;
+  width: 232px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  background: rgba(5, 14, 24, 0.9);
+  border: 1px solid rgba(62, 224, 255, 0.35);
+  border-radius: 14px;
+  backdrop-filter: blur(2px);
+}
+
+.crew-hud-hit {
+  animation: crew-shake 420ms ease-out;
+  border-color: rgba(255, 138, 61, 0.9);
+  box-shadow: 0 0 22px rgba(255, 138, 61, 0.45);
+}
+
+@keyframes crew-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-5px, 2px); }
+  40% { transform: translate(4px, -2px); }
+  60% { transform: translate(-3px, -1px); }
+  80% { transform: translate(2px, 2px); }
+}
+
+.avatar {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar-svg {
+  width: 78px;
+  height: 84px;
+  flex: none;
+}
+
+.avatar-caption {
+  display: grid;
+  gap: 2px;
+  font-size: 11px;
+  color: #8fb4c9;
+}
+
+.avatar-name {
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.avatar-mood {
+  color: #7fdbff;
+}
+
+.avatar-state {
+  color: #8fb4c9;
+}
+
+.avatar-body {
+  transform-origin: 60px 90px;
+  animation: avatar-float 3.4s ease-in-out infinite;
+}
+
+@keyframes avatar-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-3px) rotate(-1deg); }
+}
+
+.avatar-arm-left {
+  transform-origin: 30px 76px;
+  animation: avatar-arm 4.2s ease-in-out infinite;
+}
+
+.avatar-arm-right {
+  transform-origin: 90px 76px;
+  animation: avatar-arm 4.2s ease-in-out infinite reverse;
+}
+
+@keyframes avatar-arm {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(7deg); }
+}
+
+.avatar-chest-light {
+  animation: avatar-blink 1.8s steps(1, end) infinite;
+}
+
+@keyframes avatar-blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0.25; }
+}
+
+.avatar-sweat {
+  opacity: 0;
+}
+
+.avatar-impact {
+  opacity: 0;
+}
+
+.avatar-sparkles {
+  opacity: 0;
+}
+
+/* Parpadeo: los ojos se achatan cada pocos segundos. */
+.avatar-eyes {
+  transform-origin: 60px 42px;
+  animation: avatar-blink-eyes 5.5s ease-in-out infinite;
+}
+
+@keyframes avatar-blink-eyes {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.12); }
+}
+
+.avatar-visor {
+  animation: avatar-visor-sheen 7s ease-in-out infinite;
+}
+
+@keyframes avatar-visor-sheen {
+  0%, 100% { fill: #0b1b2b; }
+  50% { fill: #112739; }
+}
+
+.avatar-chest-light-alt {
+  animation-delay: 0.9s;
+}
+
+/* Objetivo a tiro: el casco se ilumina en verde y el cuerpo se inclina hacia delante. */
+.avatar-alert .avatar-body {
+  animation: avatar-lean 1.6s ease-in-out infinite;
+}
+
+@keyframes avatar-lean {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-2px) rotate(3deg); }
+}
+
+.avatar-alert .avatar-eye {
+  fill: #3dff9a;
+}
+
+.avatar-alert .avatar-visor {
+  fill: #0d2a22;
+}
+
+/* Nervioso: temblor rápido, ojos pequeños, boca recta y gota de sudor. */
+.avatar-nervous .avatar-body {
+  animation: avatar-jitter 260ms ease-in-out infinite;
+}
+
+@keyframes avatar-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-1.5px, 1px); }
+  75% { transform: translate(1.5px, -1px); }
+}
+
+.avatar-nervous .avatar-eye {
+  r: 2.1;
+}
+
+.avatar-nervous .avatar-mouth {
+  d: path('M53 54 Q60 50 67 54');
+}
+
+.avatar-nervous .avatar-sweat {
+  opacity: 1;
+  animation: avatar-sweat-drop 1.6s ease-in infinite;
+}
+
+@keyframes avatar-sweat-drop {
+  0% { opacity: 0; transform: translateY(0); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(14px); }
+}
+
+/* Daño: sacudida fuerte, destello naranja y chispas. */
+.avatar-damage .avatar-body {
+  animation: avatar-hit 420ms ease-out;
+}
+
+@keyframes avatar-hit {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-7px, 3px) rotate(-7deg); }
+  55% { transform: translate(6px, -2px) rotate(6deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.avatar-damage .avatar-head circle:nth-child(2) {
+  fill: #3a1408;
+}
+
+.avatar-damage .avatar-eye {
+  fill: #ff8a3d;
+}
+
+.avatar-damage .avatar-mouth {
+  d: path('M53 55 Q60 49 67 55');
+  stroke: #ff8a3d;
+}
+
+.avatar-damage .avatar-impact {
+  opacity: 1;
+  animation: avatar-spark 420ms ease-out;
+}
+
+@keyframes avatar-spark {
+  0% { opacity: 1; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+
+/* Captura: pequeño salto de celebración. */
+.avatar-capture .avatar-body {
+  animation: avatar-cheer 700ms ease-out;
+}
+
+@keyframes avatar-cheer {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.avatar-capture .avatar-eye {
+  fill: #3dff9a;
+}
+
+.avatar-capture .avatar-mouth {
+  stroke: #3dff9a;
+}
+
+.avatar-capture .avatar-sparkles {
+  opacity: 1;
+  animation: avatar-sparkle 700ms ease-out;
+}
+
+@keyframes avatar-sparkle {
+  0% { opacity: 0; transform: scale(0.4) rotate(-20deg); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.3) rotate(20deg); }
+}
+
+/* Misión completada: giro de celebración con brazos arriba. */
+.avatar-celebrate .avatar-body {
+  animation: avatar-celebrate 1.6s ease-in-out infinite;
+}
+
+@keyframes avatar-celebrate {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(-8deg); }
+  75% { transform: translateY(-10px) rotate(8deg); }
+}
+
+.avatar-celebrate .avatar-arm-left {
+  animation: avatar-raise-left 1.6s ease-in-out infinite;
+}
+
+.avatar-celebrate .avatar-arm-right {
+  animation: avatar-raise-right 1.6s ease-in-out infinite;
+}
+
+@keyframes avatar-raise-left {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-42deg); }
+}
+
+@keyframes avatar-raise-right {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(42deg); }
+}
+
+.avatar-celebrate .avatar-eye {
+  fill: #ffd15c;
+}
+
+.avatar-celebrate .avatar-sparkles {
+  opacity: 1;
+  animation: avatar-sparkle 1.6s ease-in-out infinite;
+}
+
+.vitals-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.vital {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 6px;
+  font-size: 11px;
+  color: #8fb4c9;
+}
+
+.vital-value {
+  font-family: Consolas, monospace;
+  color: #e8f7ff;
+}
+
+.vital-track {
+  grid-column: 1 / -1;
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.vital-fill {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  transition: width 200ms linear;
+}
+
+.vital-hull .vital-fill { background: linear-gradient(90deg, #3dff9a, #3ee0ff); }
+.vital-heart .vital-fill { background: linear-gradient(90deg, #ff8a3d, #ff5d5d); }
+.vital-oxygen .vital-fill { background: linear-gradient(90deg, #1f7cff, #3ee0ff); }
+.vital-stress .vital-fill { background: linear-gradient(90deg, #a78bfa, #f472b6); }
+.vital-focus .vital-fill { background: linear-gradient(90deg, #3dff9a, #a3e635); }
+.vital-fatigue .vital-fill { background: linear-gradient(90deg, #5b8cff, #818cf8); }
+
+.vital-warn .vital-value {
+  color: #ffb27a;
+}
+
+.vital-warn .vital-fill {
+  background: linear-gradient(90deg, #ff8a3d, #ffd15c);
+}
+
+.crew-hud-impacts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  font-size: 11px;
+  color: #8fb4c9;
+}
+
+.crew-hud-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #3dff9a;
+  letter-spacing: 0.08em;
+}
+
+.crew-hud-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 99px;
+  background: #3dff9a;
+  animation: crew-pulse 1s ease-in-out infinite;
+}
+
+@keyframes crew-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px #3dff9a; }
+  50% { opacity: 0.35; transform: scale(0.7); box-shadow: none; }
+}
+
+.crew-hud-impacts strong {
+  color: #ffd7bf;
+  font-family: Consolas, monospace;
+}
+
+@media (max-width: 1100px) {
+  .crew-hud {
+    position: static;
+    width: auto;
+  }
+}

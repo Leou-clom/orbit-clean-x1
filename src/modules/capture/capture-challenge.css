@@ -1,0 +1,189 @@
+.capture-challenge {
+  position: absolute;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%);
+  z-index: 12;
+  width: min(460px, calc(100% - 32px));
+  padding: 16px 18px;
+  background: rgba(6, 18, 30, 0.95);
+  border: 1px solid rgba(62, 224, 255, 0.5);
+  border-radius: 14px;
+  color: #dcf1ff;
+  box-shadow: 0 0 28px rgba(0, 0, 0, 0.55);
+  animation: capture-in 160ms ease-out;
+}
+
+@keyframes capture-in {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.capture-challenge-ok {
+  border-color: #3dff9a;
+  box-shadow: 0 0 28px rgba(61, 255, 154, 0.45);
+}
+
+.capture-challenge-bad {
+  border-color: #ff8a3d;
+  box-shadow: 0 0 28px rgba(255, 138, 61, 0.45);
+  animation: capture-shake 320ms ease-out;
+}
+
+@keyframes capture-shake {
+  0%, 100% { transform: translate(-50%, 0); }
+  25% { transform: translate(calc(-50% - 7px), 0); }
+  75% { transform: translate(calc(-50% + 7px), 0); }
+}
+
+.capture-head {
+  margin-bottom: 10px;
+}
+
+.capture-kicker {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #7fdbff;
+}
+
+.capture-head h3 {
+  margin: 4px 0 2px;
+  font-size: 17px;
+  color: #ffffff;
+}
+
+.capture-instruction {
+  margin: 0;
+  font-size: 12px;
+  color: #8fb4c9;
+}
+
+.capture-timer {
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.capture-timer-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff8a3d, #ffd15c);
+  transition: width 80ms linear;
+}
+
+.capture-track {
+  position: relative;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.capture-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(61, 255, 154, 0.3);
+  border-left: 1px solid #3dff9a;
+  border-right: 1px solid #3dff9a;
+}
+
+.capture-cursor {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  margin-left: -2px;
+  border-radius: 99px;
+  background: #ffffff;
+  box-shadow: 0 0 10px #6cf0ff;
+}
+
+.capture-gauge {
+  position: relative;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.capture-gauge-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 38%;
+  width: 24%;
+  background: rgba(61, 255, 154, 0.22);
+  border-left: 1px solid rgba(61, 255, 154, 0.7);
+  border-right: 1px solid rgba(61, 255, 154, 0.7);
+}
+
+.capture-needle {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  margin-left: -2px;
+  border-radius: 99px;
+  background: #ffd15c;
+  box-shadow: 0 0 10px #ffd15c;
+}
+
+.capture-hold {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background: #3dff9a;
+  transition: width 80ms linear;
+}
+
+.capture-sequence {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.capture-key {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(62, 224, 255, 0.4);
+  font-size: 22px;
+  color: #d8f7ff;
+}
+
+.capture-key-done {
+  background: rgba(61, 255, 154, 0.18);
+  border-color: #3dff9a;
+  color: #b9ffd8;
+}
+
+.capture-grip {
+  position: relative;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.capture-grip-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1f7cff, #3dff9a);
+  transition: width 60ms linear;
+}
+
+.capture-grip span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  color: #ffffff;
+}

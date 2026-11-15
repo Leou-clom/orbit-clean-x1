@@ -1,32 +1,72 @@
-# React + TypeScript + Vite
+# ORBIT-CLEAN X
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Simulación educativa de retirada de basura espacial en órbita baja terrestre, hecha con
+Vite + React + TypeScript y React Three Fiber.
 
-Currently, two official plugins are available:
+## Arrancar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev      # servidor de desarrollo
+npm run build    # compilación de producción
+npm run preview  # sirve la compilación de producción
+npm run lint
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Cómo se juega
+
+Pilotas una estación de servicio orbital con un brazo robótico y retiras basura espacial
+antes de que se agote el tiempo de cada misión.
+
+- `W` / `S` — subir o bajar la altitud
+- `A` / `D` — girar el plano orbital
+- `←` / `→` — adelantar o retrasar la fase en la órbita
+- `↑` / `↓` — cambiar la inclinación
+- `E` — piloto automático de aproximación
+- `Espacio` — iniciar la maniobra de captura
+- `Esc` — opciones, logros, tripulación y ayuda (pausa la simulación)
+
+Capturar no es instantáneo: hay que superar una maniobra (sincronía, estabilización,
+secuencia del brazo o cierre de pinza). Cada retirada recupera un 5 % de casco; chocar con
+basura o asteroides que no son tu objetivo lo daña y altera los signos vitales del
+astronauta.
+
+## Estructura
+
+```
+public/
+  models/      modelos .glb de NASA (ver ATTRIBUTIONS.md)
+  textures/    texturas de planetas (ver ATTRIBUTIONS.md)
+src/
+  lib/         utilidades compartidas: mecánica orbital, reloj de simulación,
+               estado vivo de la estación, calidad gráfica, aleatoriedad determinista
+  data/        población de basura espacial, 20 misiones, astronautas
+  types/       tipos compartidos entre módulos del equipo
+  modules/
+    orbital/   escena 3D: Tierra, Luna, planetas, campo de basura, estación
+    pilot/     consola de pilotaje y telemetría
+    missions/  briefing, resultados y motor de puntaje
+    capture/   maniobras de captura
+    crew/      astronauta animado y signos vitales
+    health/    panel de salud (módulo de persona 4, sin modificar)
+    achievements/, options/, tutorial/
+  App.tsx      dueño del estado global y bucle de juego
+docs/          diseño aprobado del módulo orbital
+```
+
+## Realismo: qué es real y qué no
+
+- **Real:** la velocidad orbital y el periodo se calculan con las fórmulas de una órbita
+  circular; las bandas de altitud e inclinación siguen las distribuciones publicadas por
+  NASA ODPO y ESA; la Luna está a su distancia real.
+- **Simulado:** cada objeto es sintético, no un objeto del catálogo real. Los tamaños están
+  exagerados para que se vean. El Sol y los planetas del fondo no están a escala ni a
+  distancia real. El tiempo corre acelerado ×90. Los signos vitales son ficticios y no son
+  mediciones médicas.
+
+## Rendimiento
+
+El campo se dibuja con `InstancedMesh` por tipo de objeto, así que cientos de objetos caben
+en pocas llamadas de dibujo. Los modelos detallados solo se cargan para la nave y para el
+objeto fijado. En `Esc → Rendimiento` hay tres niveles de calidad, y el nivel inicial se
+detecta según el número de núcleos de la máquina.
