@@ -405,3 +405,23 @@
   .vital-label { font-size: 9px; }
   .vital-value { font-size: 9px; }
 }
+
+/* En cualquier dispositivo táctil el joystick ocupa la esquina inferior izquierda,
+   que es justo donde vivía este panel. Se aparta, sea cual sea el ancho de pantalla. */
+[data-touch='on'] .crew-hud {
+  left: auto;
+  right: 12px;
+  bottom: auto;
+  top: 44vh;
+  width: 150px;
+  padding: 8px 9px;
+  gap: 5px;
+}
+
+[data-touch='on'] .avatar-caption { display: none; }
+[data-touch='on'] .avatar-svg { width: 42px; height: 42px; }
+[data-touch='on'] .crew-hud-pulse { display: none; }
+[data-touch='on'] .crew-hud-impacts { font-size: 9px; white-space: nowrap; }
+[data-touch='on'] .vitals-list > *:nth-child(n + 3) { display: none; }
+[data-touch='on'] .vital-label,
+[data-touch='on'] .vital-value { font-size: 9px; }

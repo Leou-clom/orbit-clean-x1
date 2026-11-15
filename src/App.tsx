@@ -4,6 +4,8 @@ import { OrbitalScene } from './modules/orbital/OrbitalScene';
 import { PilotConsole, type CaptureStatus } from './modules/pilot/PilotConsole';
 import { TouchControls } from './modules/pilot/TouchControls';
 import { isTouchDevice } from './lib/pointer';
+import { touchAxes } from './lib/touchInput';
+import { LandscapeGate } from './modules/pilot/LandscapeGate';
 import { MissionBriefing, MissionResults } from './modules/missions/MissionOverlay';
 import { HealthPanel } from './modules/health/HealthPanel';
 import { VitalsHud } from './modules/crew/VitalsHud';
@@ -405,6 +407,16 @@ function App() {
       if (keys.has('ArrowLeft')) state.angleDeg -= 15 * delta;
       if (keys.has('ArrowRight')) state.angleDeg += 15 * delta;
 
+      // Joystick táctil: mismas tasas que las flechas, pero proporcionales a cuánto se
+      // inclina el dedo. Se suma a las teclas en vez de sustituirlas, así un portátil con
+      // pantalla táctil puede usar ambos.
+      if (touchAxes.y !== 0) {
+        state.altitudeKm = clamp(state.altitudeKm + touchAxes.y * 85 * delta, 220, 35786);
+      }
+      if (touchAxes.x !== 0) {
+        state.angleDeg += touchAxes.x * 15 * delta;
+      }
+
       if (approachRef.current) steer(shipRef.current.steerRate * 1.5);
 
       if (dodgeUntilRef.current > now) {
@@ -781,7 +793,7 @@ function App() {
   const handleCrewChange = useCallback((next: CrewStatus) => setCrew(next), []);
 
   return (
-    <div className="dashboard">
+    <div className="dashboard" data-touch={touch ? 'on' : undefined}>
       <section className="dashboard-stage">
         <OrbitalScene
           objects={visibleObjects}
@@ -869,6 +881,9 @@ function App() {
           visible={touch && phase === 'playing' && !paused && destroyedAt === null}
           capturing={challenge !== null}
         />
+
+        {/* En vertical la escena 3D es injugable: se pide girar antes de nada. */}
+        <LandscapeGate enabled={touch} />
 
         {hitFlash ? <div className="dashboard-damage" /> : null}
 
