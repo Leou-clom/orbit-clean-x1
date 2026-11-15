@@ -14,6 +14,18 @@ const SECONDARY_BONUS = 250;
 const MISTAKE_PENALTY = 25;
 const COLLISION_PENALTY = 40;
 
+// Familias catalogadas por NASA/NORAD que de verdad cruzan las órbitas bajas de trabajo.
+const HAZARD_DESIGNATIONS = [
+  'FENGYUN 1C DEB',
+  'COSMOS 2251 DEB',
+  'IRIDIUM 33 DEB',
+  'COSMOS 1408 DEB',
+  'SL-16 R/B DEB',
+  'DELTA 1 DEB',
+  'NOAA 16 DEB',
+  'METEOR 2-08 DEB',
+];
+
 export function matchesFilter(object: OrbitalDebris, filter?: TargetFilter): boolean {
   if (!filter) return true;
   if (filter.sizeClass && object.sizeClass !== filter.sizeClass) return false;
@@ -86,7 +98,7 @@ export function generateHazardCloud(mission: MissionDefinition, targets: Orbital
   if (!anchor) return [];
 
   const rng = mulberry32(5000 + mission.id);
-  const count = 70 + mission.id * 2;
+  const count = 18 + Math.floor(mission.id / 2);
   const cloud: OrbitalDebris[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -99,9 +111,13 @@ export function generateHazardCloud(mission: MissionDefinition, targets: Orbital
     const crossing = rng() < 0.5;
     const inclinationOffset = crossing ? (rng() < 0.5 ? -1 : 1) * (14 + rng() * 26) : (rng() - 0.5) * 2;
 
+    const designation = isAsteroid
+      ? 'NEO FRAGMENT'
+      : HAZARD_DESIGNATIONS[i % HAZARD_DESIGNATIONS.length];
+
     cloud.push({
       id: `hz-${mission.id}-${i}`,
-      name: `${isAsteroid ? 'AST' : 'FRG'}-${mission.id}${i.toString().padStart(2, '0')}`,
+      name: `${designation} ${(mission.id * 100 + i).toString().padStart(3, '0')}`,
       type: isAsteroid ? 'asteroid' : 'debris',
       altitudeKm: anchor.altitudeKm + (rng() - 0.5) * (crossing ? 40 : 220),
       inclinationDeg: anchor.inclinationDeg + inclinationOffset,

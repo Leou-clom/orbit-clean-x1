@@ -1,4 +1,6 @@
+import { ShieldCheck, Target, Timer, Trash2, Trophy, Zap } from 'lucide-react';
 import type { MissionDefinition, MissionResult } from '../../types/orbital';
+import { StatsCard, StatsGrid } from '../stats/StatsCard';
 import './missions.css';
 
 interface BriefingProps {
@@ -110,40 +112,58 @@ export function MissionResults({ result, hasNextMission, onRetry, onNext, onBrie
           {result.mainObjectiveCompleted ? 'Objetivo principal completado' : 'Objetivo principal no completado'}
         </p>
 
-        <dl className="mission-stats">
-          <div>
-            <dt>Puntaje total</dt>
-            <dd className="mission-score">{result.totalScore}</dd>
-          </div>
-          <div>
-            <dt>Objetos retirados</dt>
-            <dd>{result.capturedCount}</dd>
-          </div>
-          <div>
-            <dt>Progreso del objetivo</dt>
-            <dd>{result.objectiveProgress}</dd>
-          </div>
-          <div>
-            <dt>Tiempo de misión</dt>
-            <dd>{Math.round(result.elapsedSeconds)} s</dd>
-          </div>
-          <div>
-            <dt>Errores</dt>
-            <dd>{result.mistakes}</dd>
-          </div>
-          <div>
-            <dt>Impactos recibidos</dt>
-            <dd>{result.collisions}</dd>
-          </div>
-          <div>
-            <dt>Casco restante</dt>
-            <dd>{Math.round(result.hullIntegrity)} %</dd>
-          </div>
-          <div>
-            <dt>Vidas restantes</dt>
-            <dd>{result.livesRemaining}</dd>
-          </div>
-        </dl>
+        <div className="mission-stats-wrap">
+          <StatsGrid>
+            <StatsCard
+              index={0}
+              title="Puntaje total"
+              value={result.totalScore}
+              detail={`Rango de misión ${result.difficulty}`}
+              icon={Trophy}
+              tone="amber"
+            />
+            <StatsCard
+              index={1}
+              title="Objetos retirados"
+              value={result.capturedCount}
+              detail={`Objetivo: ${result.objectiveProgress}`}
+              icon={Trash2}
+              tone="green"
+            />
+            <StatsCard
+              index={2}
+              title="Tiempo de misión"
+              value={`${Math.round(result.elapsedSeconds)} s`}
+              detail={result.speedBonus > 0 ? `Bonus +${result.speedBonus}` : 'Sin bonus de rapidez'}
+              icon={Timer}
+              tone="cyan"
+            />
+            <StatsCard
+              index={3}
+              title="Casco restante"
+              value={`${Math.round(result.hullIntegrity)} %`}
+              detail={`${result.livesRemaining} vida restante`}
+              icon={ShieldCheck}
+              tone="violet"
+            />
+            <StatsCard
+              index={4}
+              title="Impactos recibidos"
+              value={result.collisions}
+              change={result.collisionPenalty > 0 ? -result.collisionPenalty : undefined}
+              icon={Zap}
+              tone="rose"
+            />
+            <StatsCard
+              index={5}
+              title="Errores de maniobra"
+              value={result.mistakes}
+              change={result.mistakePenalty > 0 ? -result.mistakePenalty : undefined}
+              icon={Target}
+              tone="rose"
+            />
+          </StatsGrid>
+        </div>
 
         <div className="mission-block">
           <h3>Desglose del puntaje</h3>

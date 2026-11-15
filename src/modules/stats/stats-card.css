@@ -1,0 +1,103 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  gap: 12px;
+}
+
+/* Glassmorphism: fondo translúcido, desenfoque del contenido de atrás y borde claro. */
+.stats-card {
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  cursor: default;
+}
+
+/* Halo de color detrás del cristal, distinto por tipo de dato. */
+.stats-card-glow {
+  position: absolute;
+  top: -42px;
+  right: -42px;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  filter: blur(34px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.stats-card-cyan .stats-card-glow { background: #3ee0ff; }
+.stats-card-green .stats-card-glow { background: #3dff9a; }
+.stats-card-amber .stats-card-glow { background: #ffd15c; }
+.stats-card-violet .stats-card-glow { background: #a78bfa; }
+.stats-card-rose .stats-card-glow { background: #ff8a3d; }
+
+.stats-card-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stats-card-text {
+  min-width: 0;
+}
+
+.stats-card-title {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stats-card-value {
+  margin: 6px 0 0;
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 650;
+  color: #ffffff;
+  font-family: Consolas, monospace;
+}
+
+.stats-card-detail {
+  margin: 5px 0 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.stats-card-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #6ee7a8;
+}
+
+.stats-card-change-down {
+  color: #ff9f7a;
+}
+
+.stats-card-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.stats-card-cyan .stats-card-icon { color: #7fdbff; }
+.stats-card-green .stats-card-icon { color: #8dffc4; }
+.stats-card-amber .stats-card-icon { color: #ffe09a; }
+.stats-card-violet .stats-card-icon { color: #c9b8ff; }
+.stats-card-rose .stats-card-icon { color: #ffbb96; }

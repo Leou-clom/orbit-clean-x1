@@ -40,7 +40,7 @@ import type { Achievement, CrewStatus, OrbitalDebris, DebrisSizeClass, MissionRe
 
 const CAPTURE_RANGE_KM = 150;
 const CARGO_CAPACITY = 70;
-const COLLISION_RADIUS_UNITS = kmToUnits(150);
+const COLLISION_RADIUS_UNITS = kmToUnits(105);
 const COLLISION_RADIUS_SQ = COLLISION_RADIUS_UNITS * COLLISION_RADIUS_UNITS;
 const WARNING_RADIUS_UNITS = kmToUnits(520);
 const WARNING_RADIUS_SQ = WARNING_RADIUS_UNITS * WARNING_RADIUS_UNITS;
@@ -728,10 +728,6 @@ function App() {
 
         <div className="dashboard-brand">
           <h1>ORBIT-CLEAN X</h1>
-          <p className="dashboard-subtitle">
-            {population.length} objetos sobre bandas de altitud publicadas por NASA ODPO y ESA · Luna a
-            distancia real · Sol y planetas de fondo sin escala · tiempo ×90
-          </p>
         </div>
 
         <button type="button" className="dashboard-options-button" onClick={togglePause}>

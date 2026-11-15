@@ -61,10 +61,6 @@ export function InfoPanel({ selected, isTarget, onClose }: InfoPanelProps) {
       </dl>
 
       <p className="orbital-info-band">{selected.bandLabel}</p>
-      <p className="orbital-info-note">
-        Velocidad y periodo se calculan para una órbita circular a esa altitud. La posición del objeto es
-        simulada dentro de su banda, no una posición catalogada.
-      </p>
     </aside>
   );
 }

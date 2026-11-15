@@ -189,6 +189,10 @@
   color: #ffd7bf;
 }
 
+.mission-stats-wrap {
+  margin-top: 16px;
+}
+
 .mission-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
