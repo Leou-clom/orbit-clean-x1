@@ -21,44 +21,102 @@ export function AstronautAvatar({ state, name, moodLabel }: AstronautAvatarProps
   return (
     <figure className={`avatar avatar-${state}`}>
       <svg viewBox="0 0 120 130" className="avatar-svg" role="img" aria-label={`${name}: ${STATE_CAPTION[state]}`}>
-        <ellipse cx="60" cy="124" rx="34" ry="5" fill="rgba(62,224,255,0.12)" />
+        <defs>
+          <linearGradient id="suit" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="55%" stopColor="#e4ebf2" />
+            <stop offset="100%" stopColor="#b9c6d4" />
+          </linearGradient>
+          <linearGradient id="visor" x1="0.2" y1="0" x2="0.8" y2="1">
+            <stop offset="0%" stopColor="#8a6a1f" />
+            <stop offset="45%" stopColor="#3d2f10" />
+            <stop offset="100%" stopColor="#1a1407" />
+          </linearGradient>
+          <linearGradient id="pack" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#9fb0c0" />
+            <stop offset="100%" stopColor="#6b7c8c" />
+          </linearGradient>
+        </defs>
+
+        <ellipse cx="60" cy="125" rx="33" ry="4.5" fill="rgba(62,224,255,0.1)" />
 
         <g className="avatar-body">
-          <rect x="34" y="66" width="52" height="48" rx="18" fill="#e8eef5" stroke="#9fb6c9" strokeWidth="2" />
-          <rect x="46" y="78" width="28" height="18" rx="4" fill="#0d2233" stroke="#3ee0ff" strokeWidth="1.5" />
-          <circle className="avatar-chest-light" cx="54" cy="87" r="2.6" fill="#3dff9a" />
-          <circle className="avatar-chest-light avatar-chest-light-alt" cx="66" cy="87" r="2.6" fill="#ff8a3d" />
+          {/* Mochila de soporte vital, detrás del torso */}
+          <rect x="30" y="62" width="60" height="42" rx="12" fill="url(#pack)" stroke="#55646f" strokeWidth="1.5" />
+          <rect x="36" y="66" width="10" height="20" rx="3" fill="#4a5967" />
+          <rect x="74" y="66" width="10" height="20" rx="3" fill="#4a5967" />
 
+          {/* Torso del traje */}
+          <path
+            d="M38 70 Q38 62 46 61 L74 61 Q82 62 82 70 L83 102 Q83 112 73 113 L47 113 Q37 112 37 102 Z"
+            fill="url(#suit)"
+            stroke="#93a4b5"
+            strokeWidth="1.8"
+          />
+          {/* Pliegues del traje */}
+          <path d="M44 88 H76 M44 95 H76" stroke="#c3d0dc" strokeWidth="1.4" fill="none" />
+
+          {/* Módulo de control en el pecho */}
+          <rect x="48" y="70" width="24" height="15" rx="3" fill="#16222e" stroke="#7f8f9e" strokeWidth="1.2" />
+          <circle className="avatar-chest-light" cx="54" cy="77" r="2.3" fill="#3dff9a" />
+          <circle className="avatar-chest-light avatar-chest-light-alt" cx="61" cy="77" r="2.3" fill="#ff8a3d" />
+          <rect x="65" y="74" width="5" height="6" rx="1" fill="#3ee0ff" opacity="0.8" />
+
+          {/* Manguera de oxígeno */}
+          <path d="M40 74 Q30 80 33 92" stroke="#8d9dab" strokeWidth="3" fill="none" strokeLinecap="round" />
+
+          {/* Brazos con articulación y guante */}
           <g className="avatar-arm avatar-arm-left">
-            <rect x="18" y="70" width="18" height="34" rx="9" fill="#e8eef5" stroke="#9fb6c9" strokeWidth="2" />
+            <rect x="19" y="68" width="17" height="33" rx="8.5" fill="url(#suit)" stroke="#93a4b5" strokeWidth="1.6" />
+            <path d="M21 80 H34" stroke="#c3d0dc" strokeWidth="1.3" />
+            <circle cx="27.5" cy="102" r="7" fill="#d7e1ea" stroke="#93a4b5" strokeWidth="1.5" />
           </g>
           <g className="avatar-arm avatar-arm-right">
-            <rect x="84" y="70" width="18" height="34" rx="9" fill="#e8eef5" stroke="#9fb6c9" strokeWidth="2" />
+            <rect x="84" y="68" width="17" height="33" rx="8.5" fill="url(#suit)" stroke="#93a4b5" strokeWidth="1.6" />
+            <path d="M86 80 H99" stroke="#c3d0dc" strokeWidth="1.3" />
+            <circle cx="92.5" cy="102" r="7" fill="#d7e1ea" stroke="#93a4b5" strokeWidth="1.5" />
           </g>
 
+          {/* Casco */}
           <g className="avatar-head">
-            <circle cx="60" cy="42" r="30" fill="#f1f6fa" stroke="#9fb6c9" strokeWidth="2" />
-            <circle className="avatar-visor" cx="60" cy="42" r="23" fill="#0b1b2b" />
-            <path d="M44 34 Q52 26 64 27" stroke="rgba(255,255,255,0.55)" strokeWidth="4" fill="none" strokeLinecap="round" />
+            <circle cx="60" cy="40" r="29" fill="url(#suit)" stroke="#93a4b5" strokeWidth="2" />
+            <circle cx="60" cy="40" r="29" fill="none" stroke="#ffffff" strokeWidth="1" opacity="0.7" />
+            {/* Cuello del casco */}
+            <rect x="46" y="62" width="28" height="7" rx="3" fill="#aebccb" stroke="#8294a4" strokeWidth="1" />
+
+            {/* Visor dorado */}
+            <ellipse className="avatar-visor" cx="60" cy="40" rx="22" ry="20" fill="url(#visor)" />
+            {/* Reflejo del visor */}
+            <path
+              d="M45 30 Q52 22 64 23 Q54 27 49 37 Z"
+              fill="rgba(255,255,255,0.4)"
+            />
+            <path d="M72 47 Q76 40 74 32" stroke="rgba(255,255,255,0.22)" strokeWidth="3" fill="none" strokeLinecap="round" />
+
+            {/* Cara tras el visor */}
             <g className="avatar-face">
               <g className="avatar-eyes">
-                <circle className="avatar-eye" cx="52" cy="42" r="3.2" fill="#9ff0ff" />
-                <circle className="avatar-eye" cx="68" cy="42" r="3.2" fill="#9ff0ff" />
+                <circle className="avatar-eye" cx="53" cy="39" r="2.9" fill="#bfe9ff" />
+                <circle className="avatar-eye" cx="67" cy="39" r="2.9" fill="#bfe9ff" />
               </g>
-              <path className="avatar-mouth" d="M53 52 Q60 56 67 52" stroke="#9ff0ff" strokeWidth="2" fill="none" strokeLinecap="round" />
+              <path className="avatar-mouth" d="M54 49 Q60 53 66 49" stroke="#bfe9ff" strokeWidth="1.9" fill="none" strokeLinecap="round" />
             </g>
-            <circle className="avatar-sweat" cx="78" cy="34" r="3" fill="#7fdbff" />
+
+            {/* Luces del casco */}
+            <rect x="34" y="31" width="5" height="11" rx="2.5" fill="#dfe8f0" stroke="#8294a4" strokeWidth="1" />
+            <rect x="81" y="31" width="5" height="11" rx="2.5" fill="#dfe8f0" stroke="#8294a4" strokeWidth="1" />
+            <circle className="avatar-sweat" cx="76" cy="30" r="2.8" fill="#7fdbff" />
           </g>
         </g>
 
         <g className="avatar-impact">
-          <path d="M18 24 L30 36 M24 18 L36 30" stroke="#ff8a3d" strokeWidth="3" strokeLinecap="round" />
-          <path d="M102 24 L90 36 M96 18 L84 30" stroke="#ff8a3d" strokeWidth="3" strokeLinecap="round" />
+          <path d="M16 26 L28 38 M22 20 L34 32" stroke="#ff8a3d" strokeWidth="3" strokeLinecap="round" />
+          <path d="M104 26 L92 38 M98 20 L86 32" stroke="#ff8a3d" strokeWidth="3" strokeLinecap="round" />
         </g>
 
         <g className="avatar-sparkles">
-          <path d="M22 50 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5 -6 -6 -2.5 6 -2.5z" fill="#ffd15c" />
-          <path d="M98 44 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#3dff9a" />
+          <path d="M20 52 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5 -6 -6 -2.5 6 -2.5z" fill="#ffd15c" />
+          <path d="M100 46 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#3dff9a" />
         </g>
       </svg>
 

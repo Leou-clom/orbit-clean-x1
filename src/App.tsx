@@ -32,6 +32,7 @@ import {
   meanMotionDegPerSec,
   orbitalPosition,
   shortestAngleDeg,
+  unitsToKm,
 } from './lib/orbitalMath';
 import { toRenderData } from './modules/orbital/lib/orbitalRenderData';
 import type { StationState } from './modules/orbital/types';
@@ -41,7 +42,12 @@ const CAPTURE_RANGE_KM = 150;
 const CARGO_CAPACITY = 70;
 const COLLISION_RADIUS_UNITS = kmToUnits(150);
 const COLLISION_RADIUS_SQ = COLLISION_RADIUS_UNITS * COLLISION_RADIUS_UNITS;
+const WARNING_RADIUS_UNITS = kmToUnits(520);
+const WARNING_RADIUS_SQ = WARNING_RADIUS_UNITS * WARNING_RADIUS_UNITS;
 const HIT_COOLDOWN_MS = 2500;
+const GRACE_AFTER_HIT_MS = 2200;
+const DODGE_DURATION_MS = 900;
+const DODGE_COOLDOWN_MS = 4000;
 
 const HULL_DAMAGE: Record<DebrisSizeClass, number> = { small: 3, medium: 6, large: 10 };
 
@@ -103,6 +109,8 @@ function App() {
   const [capture, setCapture] = useState<{ objectId: string; at: number } | null>(null);
   const [challenge, setChallenge] = useState<{ target: OrbitalDebris; kinds: ChallengeKind[] } | null>(null);
   const [hitFlash, setHitFlash] = useState(false);
+  const [threat, setThreat] = useState<{ id: string; name: string; distanceKm: number } | null>(null);
+  const [dodgeReady, setDodgeReady] = useState(true);
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const [crew, setCrew] = useState<CrewStatus>(INITIAL_CREW);
 
@@ -126,6 +134,11 @@ function App() {
   const pausedAtRef = useRef(0);
   const hullRef = useRef(100);
   const lastHitRef = useRef<Map<string, number>>(new Map());
+  const graceUntilRef = useRef(0);
+  const threatRef = useRef<OrbitalDebris | null>(null);
+  const dodgeUntilRef = useRef(0);
+  const dodgeReadyAtRef = useRef(0);
+  const dodgeDirRef = useRef(1);
 
   const capturedIds = useMemo(() => new Set(captured.map((object) => object.id)), [captured]);
   const targetIds = useMemo(() => new Set(targets.map((object) => object.id)), [targets]);
@@ -324,24 +337,39 @@ function App() {
       state.angleDeg += meanMotionDegPerSec(state.altitudeKm) * simDelta;
 
       if (MOVEMENT_KEYS.some((key) => keys.has(key))) approachRef.current = false;
-      // Hasta GEO: antes el techo de 2200 km se sentía como chocar con una pared al subir.
-      if (keys.has('KeyW')) state.altitudeKm = Math.min(35786, state.altitudeKm + 260 * delta);
-      if (keys.has('KeyS')) state.altitudeKm = Math.max(220, state.altitudeKm - 260 * delta);
-      if (keys.has('KeyA')) state.raanDeg = (state.raanDeg - 20 * delta + 360) % 360;
-      if (keys.has('KeyD')) state.raanDeg = (state.raanDeg + 20 * delta) % 360;
-      if (keys.has('ArrowUp')) state.inclinationDeg = Math.min(120, state.inclinationDeg + 14 * delta);
-      if (keys.has('ArrowDown')) state.inclinationDeg = Math.max(0, state.inclinationDeg - 14 * delta);
-      if (keys.has('ArrowLeft')) state.angleDeg -= 45 * delta;
-      if (keys.has('ArrowRight')) state.angleDeg += 45 * delta;
 
       const chase = nearestRef.current;
-      if (approachRef.current && chase) {
-        const gain = 1 - Math.exp(-4.5 * delta);
+
+      // Pilotar hacia el objetivo con una sola tecla. Antes había que componer a mano altitud,
+      // plano e inclinación, que es lo que obligaba a depender del piloto automático.
+      const steer = (rate: number) => {
+        if (!chase) return;
+        const gain = 1 - Math.exp(-rate * delta);
         state.altitudeKm += (chase.altitudeKm - state.altitudeKm) * gain;
         state.inclinationDeg += (chase.inclinationDeg - state.inclinationDeg) * gain;
         state.raanDeg += shortestAngleDeg(state.raanDeg, chase.raanDeg) * gain;
         const chaseAngle = currentAngleDeg(chase.phaseDeg, chase.altitudeKm, simSeconds);
         state.angleDeg += shortestAngleDeg(state.angleDeg, chaseAngle) * gain;
+      };
+
+      if (keys.has('KeyW')) steer(2.4);
+      if (keys.has('KeyS')) {
+        // Alejarse: separa altitud y fase respecto al objetivo.
+        const away = chase && chase.altitudeKm > state.altitudeKm ? -1 : 1;
+        state.altitudeKm = clamp(state.altitudeKm + away * 180 * delta, 220, 35786);
+        state.angleDeg -= 26 * delta;
+      }
+      if (keys.has('KeyA')) state.raanDeg = (state.raanDeg - 20 * delta + 360) % 360;
+      if (keys.has('KeyD')) state.raanDeg = (state.raanDeg + 20 * delta) % 360;
+      if (keys.has('ArrowUp')) state.altitudeKm = Math.min(35786, state.altitudeKm + 260 * delta);
+      if (keys.has('ArrowDown')) state.altitudeKm = Math.max(220, state.altitudeKm - 260 * delta);
+      if (keys.has('ArrowLeft')) state.angleDeg -= 45 * delta;
+      if (keys.has('ArrowRight')) state.angleDeg += 45 * delta;
+
+      if (approachRef.current) steer(4.5);
+
+      if (dodgeUntilRef.current > now) {
+        state.altitudeKm = clamp(state.altitudeKm + dodgeDirRef.current * 170 * delta, 220, 35786);
       }
 
       orbitalPosition(stationPoint, state.altitudeKm, state.inclinationDeg, state.raanDeg, state.angleDeg);
@@ -369,6 +397,10 @@ function App() {
       // objetos entre frames, y usar la velocidad absoluta sobreestima: lo que importa es el
       // movimiento relativo, que es casi nulo entre objetos de la misma banda.
       const prevSim = simSeconds - simDelta;
+      const invulnerable = now < graceUntilRef.current;
+      let threat: OrbitalDebris | null = null;
+      let threatDistance = Infinity;
+
       for (const hazard of hazardsRef.current) {
         const lastHit = lastHitRef.current.get(hazard.id) ?? 0;
         if (now - lastHit < HIT_COOLDOWN_MS) continue;
@@ -394,9 +426,21 @@ function App() {
         const cy = y0 + dy * t;
         const cz = z0 + dz * t;
 
-        if (cx * cx + cy * cy + cz * cz > COLLISION_RADIUS_SQ) continue;
+        const closestSq = cx * cx + cy * cy + cz * cz;
+
+        // Aviso de proximidad: el jugador ve venir el impacto y puede esquivar antes de recibirlo.
+        if (closestSq < WARNING_RADIUS_SQ) {
+          const closestKm = unitsToKm(Math.sqrt(closestSq));
+          if (closestKm < threatDistance) {
+            threatDistance = closestKm;
+            threat = hazard;
+          }
+        }
+
+        if (closestSq > COLLISION_RADIUS_SQ || invulnerable) continue;
 
         lastHitRef.current.set(hazard.id, now);
+        graceUntilRef.current = now + GRACE_AFTER_HIT_MS;
         const damage =
           HULL_DAMAGE[hazard.sizeClass] *
           (1 + (hazard.resistance - 1) * 0.25) *
@@ -419,6 +463,8 @@ function App() {
         break;
       }
 
+      threatRef.current = threat;
+
       prevStationPoint.x = stationPoint.x;
       prevStationPoint.y = stationPoint.y;
       prevStationPoint.z = stationPoint.z;
@@ -426,6 +472,12 @@ function App() {
       if (now - lastPush > 60) {
         lastPush = now;
         setStation({ ...state });
+        setThreat((current) => {
+          if (!threat) return current === null ? current : null;
+          if (current && current.id === threat.id && Math.abs(current.distanceKm - threatDistance) < 15) return current;
+          return { id: threat.id, name: threat.name, distanceKm: threatDistance };
+        });
+        setDodgeReady(now >= dodgeReadyAtRef.current);
         setNearest((current) => {
           if (!best) return current === null ? current : null;
           if (current && current.id === best.id && Math.abs(current.distanceKm - bestDistance) < 3) return current;
@@ -563,6 +615,27 @@ function App() {
     }
   }, [running]);
 
+  const handleDodge = useCallback(() => {
+    if (!running) return;
+    const now = performance.now();
+    if (now < dodgeReadyAtRef.current) return;
+
+    // Se esquiva alejándose en altitud del objeto que amenaza, lo que rompe la trayectoria.
+    const danger = threatRef.current;
+    dodgeDirRef.current = danger && danger.altitudeKm > liveStation.altitudeKm ? -1 : 1;
+    dodgeUntilRef.current = now + DODGE_DURATION_MS;
+    dodgeReadyAtRef.current = now + DODGE_COOLDOWN_MS;
+    graceUntilRef.current = Math.max(graceUntilRef.current, now + DODGE_DURATION_MS);
+    approachRef.current = false;
+    setApproachEngaged(false);
+    setDodgeReady(false);
+    setCrew((current) => ({
+      ...current,
+      heartRateBpm: clamp(current.heartRateBpm + 6, 58, 112),
+      stressPercent: clamp(current.stressPercent + 4, 12, 80),
+    }));
+  }, [running]);
+
   const handleAbort = useCallback(() => {
     if (phase !== 'playing') return;
     finishRef.current(false);
@@ -595,10 +668,11 @@ function App() {
       if (!running) return;
       if (event.code === 'Space') handleCapture();
       if (event.code === 'KeyE') handleApproach();
+      if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') handleDodge();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [running, showTutorial, handleCapture, handleApproach, togglePause]);
+  }, [running, showTutorial, handleCapture, handleApproach, handleDodge, togglePause]);
 
   useEffect(() => {
     if (!capture) return;
@@ -677,9 +751,12 @@ function App() {
           capturePoints={capturePoints}
           timeLeft={timeLeft}
           running={running}
+          threat={threat}
+          dodgeReady={dodgeReady}
           onApproach={handleApproach}
           onCapture={handleCapture}
           onAbort={handleAbort}
+          onDodge={handleDodge}
         />
 
         <VitalsHud

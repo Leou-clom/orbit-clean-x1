@@ -118,13 +118,14 @@
   95% { transform: scaleY(0.12); }
 }
 
+/* El visor es un degradado dorado: se anima el brillo, no el color, para no pisarlo. */
 .avatar-visor {
   animation: avatar-visor-sheen 7s ease-in-out infinite;
 }
 
 @keyframes avatar-visor-sheen {
-  0%, 100% { fill: #0b1b2b; }
-  50% { fill: #112739; }
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.28); }
 }
 
 .avatar-chest-light-alt {
@@ -146,7 +147,7 @@
 }
 
 .avatar-alert .avatar-visor {
-  fill: #0d2a22;
+  filter: brightness(1.2) hue-rotate(55deg);
 }
 
 /* Nervioso: temblor rápido, ojos pequeños, boca recta y gota de sudor. */
@@ -191,8 +192,8 @@
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 
-.avatar-damage .avatar-head circle:nth-child(2) {
-  fill: #3a1408;
+.avatar-damage .avatar-visor {
+  filter: brightness(0.6) saturate(1.6) hue-rotate(-18deg);
 }
 
 .avatar-damage .avatar-eye {

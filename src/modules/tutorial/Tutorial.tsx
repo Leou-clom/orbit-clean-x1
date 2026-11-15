@@ -19,14 +19,19 @@ const STEPS: TutorialStep[] = [
     hint: 'Haz clic en cualquier objeto para ver su altitud, velocidad y banda orbital reales.',
   },
   {
-    title: 'Aproximación y captura',
-    body: 'Pulsa Aproximación (E) para que el piloto automático iguale la órbita del objetivo. Cuando el indicador diga LISTO PARA CAPTURAR, pulsa Capturar (Espacio).',
-    hint: 'Capturar fuera de alcance cuenta como error y resta puntos.',
+    title: 'Vuela tú mismo hasta la basura',
+    body: 'Mantén W para volar hacia el objetivo marcado y S para alejarte. Con A/D giras el plano orbital, con ↑/↓ cambias la altitud y con ←/→ te adelantas o retrasas en la órbita.',
+    hint: 'Si prefieres que la nave lo haga sola, E activa el piloto automático. Es opcional.',
   },
   {
-    title: 'Cuidado: el campo te puede dañar',
-    body: 'Chocar con basura o asteroides que no son tu objetivo daña el casco de la nave. Cada impacto sube el pulso y el estrés del astronauta y le baja la concentración.',
-    hint: 'Si el casco llega a 0 pierdes tu única vida y la misión fracasa.',
+    title: 'Capturar lleva su maniobra',
+    body: 'Cuando el indicador diga LISTO PARA CAPTURAR, pulsa Espacio y aparecerá una maniobra que debes superar: sincronía, estabilización, secuencia del brazo o cierre de pinza.',
+    hint: 'Cada captura recupera un 5 % de casco. Capturar fuera de alcance cuenta como error.',
+  },
+  {
+    title: 'Esquiva antes de que te golpeen',
+    body: 'Chocar con basura o asteroides que no son tu objetivo daña el casco. Antes de cada impacto verás una alerta naranja de proximidad: pulsa Shift para hacer una maniobra evasiva.',
+    hint: 'Tras un golpe tienes unos segundos de margen. Si el casco llega a 0, la misión fracasa.',
   },
   {
     title: 'Vigila a tu tripulante',

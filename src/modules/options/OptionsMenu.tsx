@@ -101,12 +101,14 @@ export function OptionsMenu({
             <div className="options-help">
               <h3>Controles</h3>
               <ul>
-                <li><kbd>W</kbd> / <kbd>S</kbd> subir o bajar la altitud de la estación</li>
+                <li><kbd>W</kbd> volar hacia el objetivo marcado</li>
+                <li><kbd>S</kbd> alejarse del objetivo</li>
                 <li><kbd>A</kbd> / <kbd>D</kbd> girar el plano orbital</li>
+                <li><kbd>↑</kbd> / <kbd>↓</kbd> subir o bajar la altitud</li>
                 <li><kbd>←</kbd> / <kbd>→</kbd> adelantar o retrasar la fase en la órbita</li>
-                <li><kbd>↑</kbd> / <kbd>↓</kbd> cambiar la inclinación</li>
-                <li><kbd>E</kbd> piloto automático de aproximación</li>
-                <li><kbd>Espacio</kbd> capturar el objetivo</li>
+                <li><kbd>Shift</kbd> maniobra evasiva cuando salta la alerta de proximidad</li>
+                <li><kbd>E</kbd> piloto automático de aproximación (opcional)</li>
+                <li><kbd>Espacio</kbd> iniciar la maniobra de captura</li>
                 <li><kbd>Esc</kbd> abrir y cerrar estas opciones</li>
               </ul>
               <h3>Sobre los datos</h3>

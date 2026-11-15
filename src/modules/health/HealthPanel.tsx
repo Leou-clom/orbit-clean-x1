@@ -182,19 +182,22 @@ export function HealthPanel({ status, onStatusChange }: HealthPanelProps) {
   const logId = useRef(1);
   const [history, setHistory] = useState<Sample[]>([]);
   const [log, setLog] = useState<LogEntry[]>([]);
-  statusRef.current = status;
   const alerts = useMemo(() => gameAlerts(status), [status]);
   useEffect(() => {
-    setHistory((prev) => {
-      const next: Sample = {
-        label: clockLabel(),
-        heart: round(status.heartRateBpm),
-        stress: round(status.stressPercent),
-        focus: round(status.focusPercent),
-        fatigue: round(status.fatiguePercent),
-      };
-      return [...prev, next].slice(-24);
-    });
+    statusRef.current = status;
+  });
+  useEffect(() => {
+    const next: Sample = {
+      label: clockLabel(),
+      heart: round(status.heartRateBpm),
+      stress: round(status.stressPercent),
+      focus: round(status.focusPercent),
+      fatigue: round(status.fatiguePercent),
+    };
+    const id = window.setTimeout(() => {
+      setHistory((prev) => [...prev, next].slice(-24));
+    }, 0);
+    return () => window.clearTimeout(id);
   }, [status]);
   useEffect(() => {
     const id = window.setInterval(() => {

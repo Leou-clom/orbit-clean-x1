@@ -17,9 +17,12 @@ interface PilotConsoleProps {
   capturePoints: number;
   timeLeft: number;
   running: boolean;
+  threat: { name: string; distanceKm: number } | null;
+  dodgeReady: boolean;
   onApproach: () => void;
   onCapture: () => void;
   onAbort: () => void;
+  onDodge: () => void;
 }
 
 const STATUS_LABEL: Record<CaptureStatus, string> = {
@@ -48,9 +51,12 @@ export function PilotConsole({
   capturePoints,
   timeLeft,
   running,
+  threat,
+  dodgeReady,
   onApproach,
   onCapture,
   onAbort,
+  onDodge,
 }: PilotConsoleProps) {
   const progressPercent = Math.min(100, (progress / mission.targetCount) * 100);
   const cargoPercent = Math.min(100, (capturedCount / cargoCapacity) * 100);
@@ -127,6 +133,12 @@ export function PilotConsole({
 
       <p className={`pilot-status pilot-status-${captureStatus}`}>{STATUS_LABEL[captureStatus]}</p>
 
+      {threat ? (
+        <p className="pilot-threat">
+          ⚠ Proximidad: <strong>{threat.name}</strong> a {Math.round(threat.distanceKm)} km
+        </p>
+      ) : null}
+
       <div className="pilot-actions">
         <button
           type="button"
@@ -144,14 +156,22 @@ export function PilotConsole({
         >
           Capturar <kbd>Espacio</kbd>
         </button>
+        <button
+          type="button"
+          className={`pilot-button pilot-button-dodge ${threat && dodgeReady ? 'pilot-button-urgent' : ''}`}
+          onClick={onDodge}
+          disabled={!running || !dodgeReady}
+        >
+          {dodgeReady ? 'Esquivar' : 'Recargando'} <kbd>Shift</kbd>
+        </button>
         <button type="button" className="pilot-button pilot-button-abort" onClick={onAbort} disabled={!running}>
           Abortar <kbd>Esc</kbd>
         </button>
       </div>
 
       <p className="pilot-help">
-        W/S altitud · A/D plano orbital · ←/→ fase · ↑/↓ inclinación. Movimiento simulado y acelerado ×90
-        respecto al tiempo real.
+        <strong>W</strong> volar hacia el objetivo · <strong>S</strong> alejarse · A/D plano orbital · ↑/↓
+        altitud · ←/→ fase. Movimiento simulado y acelerado ×90 respecto al tiempo real.
       </p>
     </section>
   );
