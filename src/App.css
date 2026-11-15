@@ -1,0 +1,122 @@
+.dashboard {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #060606;
+  color: #eaeaea;
+}
+
+/* La simulación ocupa toda la pantalla; todo lo demás va superpuesto y no le quita sitio. */
+.dashboard-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.dashboard-brand {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 4;
+  max-width: 320px;
+  pointer-events: none;
+}
+
+.dashboard-brand h1 {
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  color: #f2f2f2;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+}
+
+.dashboard-subtitle {
+  margin: 3px 0 0;
+  font-size: 10px;
+  line-height: 1.5;
+  color: #949494;
+}
+
+.dashboard-options-button {
+  position: absolute;
+  top: 14px;
+  right: 288px;
+  z-index: 5;
+  padding: 7px 14px;
+  background: rgba(14, 14, 14, 0.85);
+  color: #ebebeb;
+  border: 1px solid rgba(230, 230, 230, 0.45);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.dashboard-options-button:hover {
+  background: rgba(230, 230, 230, 0.16);
+}
+
+.dashboard-damage {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(255, 70, 40, 0.42) 100%);
+  animation: damage-flash 900ms ease-out;
+}
+
+@keyframes damage-flash {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 900px) {
+  .dashboard-options-button {
+    right: 16px;
+    top: 56px;
+  }
+}
+
+/* Aviso que acompaña a la destrucción de la nave, mientras se ve el pecio en la escena. */
+.destroyed-banner {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  pointer-events: none;
+  max-width: 460px;
+  padding: 20px 26px;
+  text-align: center;
+  border-radius: 16px;
+  background: rgba(16, 16, 16, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  animation: destroyed-in 520ms ease-out both;
+}
+
+.destroyed-kicker {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #ff8a3d;
+}
+
+.destroyed-banner h2 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  color: #ffffff;
+}
+
+.destroyed-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #ababab;
+}
+
+@keyframes destroyed-in {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}

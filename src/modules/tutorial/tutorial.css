@@ -1,0 +1,103 @@
+.tutorial-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.tutorial-card {
+  width: min(480px, 100%);
+  padding: 22px;
+  border-radius: 16px;
+  color: #ededed;
+  background: rgba(20, 20, 20, 0.52);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(18px) saturate(100%);
+  -webkit-backdrop-filter: blur(18px) saturate(100%);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.tutorial-kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: #d6d6d6;
+}
+
+.tutorial-card h2 {
+  margin: 8px 0 10px;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.tutorial-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #e4e4e4;
+}
+
+.tutorial-hint {
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #b9ffd8;
+  background: rgba(61, 255, 154, 0.08);
+  border-left: 3px solid rgba(61, 255, 154, 0.5);
+  border-radius: 6px;
+}
+
+.tutorial-dots {
+  display: flex;
+  gap: 6px;
+  margin: 16px 0 0;
+}
+
+.tutorial-dot {
+  width: 22px;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.tutorial-dot-active {
+  background: #f2f2f2;
+}
+
+.tutorial-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tutorial-button {
+  flex: 1;
+  padding: 9px 12px;
+  background: transparent;
+  color: #ebebeb;
+  border: 1px solid rgba(230, 230, 230, 0.55);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.tutorial-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tutorial-button:not(:disabled):hover {
+  background: rgba(230, 230, 230, 0.12);
+}
+
+.tutorial-button-primary {
+  background: rgba(230, 230, 230, 0.2);
+  border-color: #f2f2f2;
+  color: #ffffff;
+}
