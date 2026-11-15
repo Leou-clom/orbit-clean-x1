@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Secretos y configuración local: nunca deben llegar al repo compartido
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+credentials.json
+.omc/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

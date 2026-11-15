@@ -1,0 +1,99 @@
+.tutorial-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 8, 16, 0.9);
+  backdrop-filter: blur(3px);
+}
+
+.tutorial-card {
+  width: min(480px, 100%);
+  padding: 22px;
+  background: linear-gradient(180deg, #0c2237 0%, #050d16 100%);
+  border: 1px solid rgba(62, 224, 255, 0.45);
+  border-radius: 16px;
+  color: #dcf1ff;
+}
+
+.tutorial-kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: #7fdbff;
+}
+
+.tutorial-card h2 {
+  margin: 8px 0 10px;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.tutorial-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #c5e8f6;
+}
+
+.tutorial-hint {
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #b9ffd8;
+  background: rgba(61, 255, 154, 0.08);
+  border-left: 3px solid rgba(61, 255, 154, 0.5);
+  border-radius: 6px;
+}
+
+.tutorial-dots {
+  display: flex;
+  gap: 6px;
+  margin: 16px 0 0;
+}
+
+.tutorial-dot {
+  width: 22px;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.tutorial-dot-active {
+  background: #6cf0ff;
+}
+
+.tutorial-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tutorial-button {
+  flex: 1;
+  padding: 9px 12px;
+  background: transparent;
+  color: #d8f7ff;
+  border: 1px solid rgba(62, 224, 255, 0.55);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.tutorial-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tutorial-button:not(:disabled):hover {
+  background: rgba(62, 224, 255, 0.12);
+}
+
+.tutorial-button-primary {
+  background: rgba(62, 224, 255, 0.2);
+  border-color: #6cf0ff;
+  color: #ffffff;
+}

@@ -1,0 +1,245 @@
+.mission-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 8, 16, 0.86);
+  backdrop-filter: blur(3px);
+  z-index: 10;
+}
+
+.mission-card {
+  width: min(560px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 22px;
+  background: linear-gradient(180deg, #0b1f31 0%, #050d16 100%);
+  border: 1px solid rgba(62, 224, 255, 0.38);
+  border-radius: 16px;
+  color: #dcf1ff;
+}
+
+.mission-kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: #7fdbff;
+}
+
+.mission-name {
+  margin: 6px 0 10px;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.mission-rank {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  border: 1px solid currentColor;
+}
+
+.mission-rank-D { color: #86efac; }
+.mission-rank-C { color: #7fdbff; }
+.mission-rank-B { color: #ffd166; }
+.mission-rank-A { color: #fb923c; }
+.mission-rank-S { color: #ff6b6b; }
+
+.mission-block {
+  margin-top: 16px;
+}
+
+.mission-block h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #79d2ff;
+}
+
+.mission-block p,
+.mission-block ul {
+  margin: 0;
+  color: #c5e8f6;
+  font-size: 14px;
+}
+
+.mission-block ul {
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 6px;
+}
+
+.mission-chip {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  padding: 6px 4px;
+  background: rgba(8, 22, 36, 0.85);
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Consolas, monospace;
+}
+
+.mission-chip:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  color: #8fb4c9;
+}
+
+.mission-chip:not(:disabled):hover {
+  background: rgba(62, 224, 255, 0.14);
+}
+
+.mission-chip-active {
+  background: rgba(62, 224, 255, 0.22);
+  box-shadow: 0 0 0 1px currentColor;
+}
+
+.mission-chip-id {
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.mission-chip-rank {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.mission-chip-best {
+  font-size: 9px;
+  color: #ffd15c;
+}
+
+.mission-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 12px;
+  color: #8fb4c9;
+}
+
+.mission-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.mission-button {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 14px;
+  background: transparent;
+  color: #d8f7ff;
+  border: 1px solid rgba(62, 224, 255, 0.55);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.mission-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.mission-button:not(:disabled):hover {
+  background: rgba(62, 224, 255, 0.12);
+}
+
+.mission-button-primary {
+  background: rgba(62, 224, 255, 0.18);
+  border-color: #6cf0ff;
+  color: #ffffff;
+}
+
+.mission-note {
+  margin: 12px 0 0;
+  font-size: 11px;
+  color: #8fb4c9;
+  line-height: 1.5;
+}
+
+.mission-verdict {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  border: 1px solid currentColor;
+}
+
+.mission-win {
+  color: #b9ffd8;
+}
+
+.mission-lose {
+  color: #ffd7bf;
+}
+
+.mission-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 16px 0 0;
+}
+
+.mission-stats div {
+  padding: 8px 10px;
+  background: rgba(8, 22, 36, 0.85);
+  border: 1px solid rgba(62, 224, 255, 0.2);
+  border-radius: 10px;
+}
+
+.mission-stats dt {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #79d2ff;
+}
+
+.mission-stats dd {
+  margin: 4px 0 0;
+  font-family: Consolas, monospace;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.mission-score {
+  color: #6cf0ff !important;
+  font-size: 28px !important;
+}
+
+.mission-breakdown {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.mission-breakdown li {
+  display: flex;
+  justify-content: space-between;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+}
+
+.mission-done {
+  color: #b9ffd8;
+}
+
+.mission-missed {
+  color: #8fb4c9;
+}
