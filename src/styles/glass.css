@@ -3,23 +3,23 @@
 .glass {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(100%);
+  -webkit-backdrop-filter: blur(14px) saturate(100%);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 /* Variante más opaca para los paneles que llevan texto denso encima de la escena 3D. */
 .glass-solid {
-  background: rgba(10, 22, 36, 0.62);
+  background: rgba(20, 20, 20, 0.52);
   border: 1px solid rgba(255, 255, 255, 0.13);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(100%);
+  -webkit-backdrop-filter: blur(18px) saturate(100%);
   box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 /* Fondo de los overlays a pantalla completa. */
 .glass-backdrop {
-  background: rgba(3, 8, 16, 0.58);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }

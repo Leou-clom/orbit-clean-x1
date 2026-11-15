@@ -1,6 +1,6 @@
 .achievements {
   padding: 16px;
-  background: linear-gradient(180deg, #0a1a28 0%, #050d16 100%);
+  background: linear-gradient(180deg, #161616 0%, #0b0b0b 100%);
   border: 1px solid rgba(62, 224, 255, 0.28);
   border-radius: 16px;
   color: #dcf1ff;
@@ -39,7 +39,7 @@
   padding: 10px;
   border: 1px solid rgba(62, 224, 255, 0.14);
   border-radius: 10px;
-  background: rgba(8, 22, 36, 0.7);
+  background: rgba(16, 16, 16, 0.66);
   opacity: 0.55;
 }
 
@@ -84,7 +84,7 @@
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: rgba(10, 24, 38, 0.95);
+  background: rgba(18, 18, 18, 0.9);
   border: 1px solid rgba(255, 209, 92, 0.7);
   border-radius: 12px;
   color: #ffeec2;

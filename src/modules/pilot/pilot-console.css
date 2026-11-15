@@ -13,10 +13,10 @@
   border-radius: 14px;
   color: #dcf1ff;
   font-size: 13px;
-  background: rgba(10, 22, 36, 0.62);
+  background: rgba(20, 20, 20, 0.52);
   border: 1px solid rgba(255, 255, 255, 0.13);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(100%);
+  -webkit-backdrop-filter: blur(18px) saturate(100%);
   box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
@@ -53,7 +53,7 @@
 .pilot-objective {
   margin: 0;
   padding: 8px 10px;
-  background: rgba(8, 24, 38, 0.9);
+  background: rgba(16, 16, 16, 0.85);
   border-left: 3px solid #3ee0ff;
   color: #c5e8f6;
 }
@@ -120,7 +120,7 @@
   display: flex;
   flex-direction: column;
   padding: 6px 8px;
-  background: rgba(8, 22, 36, 0.85);
+  background: rgba(16, 16, 16, 0.8);
   border: 1px solid rgba(62, 224, 255, 0.18);
   border-radius: 8px;
 }
