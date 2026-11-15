@@ -143,19 +143,19 @@ function Ring({ value, max, warn }: { value: number; max: number; warn: boolean 
   const pct = clamp(value / max, 0, 1);
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
-      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(94, 196, 255, 0.18)" strokeWidth={stroke} />
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(172, 172, 172, 0.18)" strokeWidth={stroke} />
       <circle
         cx={size / 2}
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke={warn ? "#ff8a3d" : "#3ee0ff"}
+        stroke={warn ? "#ff8a3d" : "#b3b3b3"}
         strokeWidth={stroke}
         strokeLinecap="round"
         strokeDasharray={`${circ * pct} ${circ}`}
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
       />
-      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fill="#e8f7ff" fontSize="16" fontFamily="Consolas, monospace">
+      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fill="#f3f3f3" fontSize="16" fontFamily="Consolas, monospace">
         {round(value)}
       </text>
     </svg>
@@ -170,7 +170,7 @@ function Bar({ value, warn }: { value: number; warn: boolean }) {
           width: `${clamp(value, 0, 100)}%`,
           background: warn
             ? "linear-gradient(90deg, #ff8a3d, #ffd15c)"
-            : "linear-gradient(90deg, #1f7cff, #3ee0ff)",
+            : "linear-gradient(90deg, #6f6f6f, #b3b3b3)",
         }}
       />
     </div>
@@ -301,7 +301,7 @@ export function HealthPanel({ status, onStatusChange }: HealthPanelProps) {
       </div>
       <div style={styles.grid}>
         {cards.map((card) => (
-          <article key={card.label} style={{ ...styles.card, borderColor: card.warn ? "rgba(255,138,61,0.85)" : "rgba(62,224,255,0.28)" }}>
+          <article key={card.label} style={{ ...styles.card, borderColor: card.warn ? "rgba(255,138,61,0.85)" : "rgba(230, 230, 230,0.28)" }}>
             <p style={styles.cardKicker}>{card.kicker}</p>
             <div style={styles.cardRow}>
               <div>
@@ -323,18 +323,18 @@ export function HealthPanel({ status, onStatusChange }: HealthPanelProps) {
         <div style={{ width: "100%", height: 280 }}>
           <ResponsiveContainer>
             <LineChart data={history} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
-              <CartesianGrid stroke="rgba(94,196,255,0.12)" />
-              <XAxis dataKey="label" stroke="#8fb4c9" tick={{ fontSize: 11 }} minTickGap={24} />
-              <YAxis stroke="#8fb4c9" tick={{ fontSize: 11 }} domain={[0, 120]} />
+              <CartesianGrid stroke="rgba(172, 172, 172,0.12)" />
+              <XAxis dataKey="label" stroke="#ababab" tick={{ fontSize: 11 }} minTickGap={24} />
+              <YAxis stroke="#ababab" tick={{ fontSize: 11 }} domain={[0, 120]} />
               <Tooltip
-                contentStyle={{ background: "#07131d", border: "1px solid #1e4d66", borderRadius: 10 }}
-                labelStyle={{ color: "#d7f6ff" }}
+                contentStyle={{ background: "#111111", border: "1px solid #424242", borderRadius: 10 }}
+                labelStyle={{ color: "#eeeeee" }}
               />
               <Legend />
               <Line type="monotone" dataKey="heart" name="Pulso simulado" stroke="#ff8a3d" dot={false} strokeWidth={2} />
-              <Line type="monotone" dataKey="stress" name="Estrés simulado" stroke="#3ee0ff" dot={false} strokeWidth={2} />
+              <Line type="monotone" dataKey="stress" name="Estrés simulado" stroke="#b3b3b3" dot={false} strokeWidth={2} />
               <Line type="monotone" dataKey="focus" name="Concentración simulada" stroke="#3dff9a" dot={false} strokeWidth={2} />
-              <Line type="monotone" dataKey="fatigue" name="Fatiga simulada" stroke="#5b8cff" dot={false} strokeWidth={2} />
+              <Line type="monotone" dataKey="fatigue" name="Fatiga simulada" stroke="#8a8a8a" dot={false} strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -377,9 +377,9 @@ export function HealthPanel({ status, onStatusChange }: HealthPanelProps) {
 }
 const styles: Record<string, CSSProperties> = {
   panel: {
-    background: "radial-gradient(circle at top left, #12324a 0%, #071018 42%, #05090e 100%)",
-    color: "#e7f6ff",
-    border: "1px solid rgba(62,224,255,0.35)",
+    background: "radial-gradient(circle at top left, #2b2b2b 0%, #0e0e0e 42%, #080808 100%)",
+    color: "#f3f3f3",
+    border: "1px solid rgba(230, 230, 230,0.35)",
     borderRadius: 18,
     padding: 20,
     display: "grid",
@@ -387,7 +387,7 @@ const styles: Record<string, CSSProperties> = {
     fontFamily: '"Segoe UI", sans-serif',
   },
   header: { display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center" },
-  kicker: { margin: 0, letterSpacing: "0.16em", fontSize: 11, color: "#7fdbff" },
+  kicker: { margin: 0, letterSpacing: "0.16em", fontSize: 11, color: "#c4c4c4" },
   title: { margin: "4px 0 0", fontSize: 26, fontWeight: 650 },
   live: {
     display: "flex",
@@ -403,10 +403,10 @@ const styles: Record<string, CSSProperties> = {
   dot: { width: 8, height: 8, borderRadius: 99, background: "#3dff9a", boxShadow: "0 0 10px #3dff9a" },
   disclaimer: {
     margin: 0,
-    background: "rgba(8, 24, 38, 0.8)",
-    borderLeft: "3px solid #3ee0ff",
+    background: "rgba(16, 16, 16, 0.8)",
+    borderLeft: "3px solid #b3b3b3",
     padding: "10px 12px",
-    color: "#c5e8f6",
+    color: "#dfdfdf",
     fontSize: 14,
   },
   ok: { margin: 0, color: "#9dffe0", fontSize: 14 },
@@ -420,12 +420,12 @@ const styles: Record<string, CSSProperties> = {
     fontSize: 14,
   },
   grid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 },
-  card: { background: "rgba(8, 22, 36, 0.88)", border: "1px solid", borderRadius: 14, padding: 14, display: "grid", gap: 8 },
-  cardKicker: { margin: 0, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#79d2ff" },
+  card: { background: "rgba(16, 16, 16, 0.88)", border: "1px solid", borderRadius: 14, padding: 14, display: "grid", gap: 8 },
+  cardKicker: { margin: 0, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#bdbdbd" },
   cardRow: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 },
-  cardLabel: { margin: 0, fontSize: 14, fontWeight: 600, color: "#d7f3ff" },
+  cardLabel: { margin: 0, fontSize: 14, fontWeight: 600, color: "#ececec" },
   cardValue: { margin: "4px 0 0", fontFamily: "Consolas, monospace", fontSize: 28, color: "#ffffff" },
-  cardDetail: { margin: 0, color: "#8fb4c9", fontSize: 12 },
+  cardDetail: { margin: 0, color: "#ababab", fontSize: 12 },
   track: { height: 8, borderRadius: 99, background: "rgba(255,255,255,0.08)", overflow: "hidden" },
   fill: { height: "100%", borderRadius: 99 },
   moodChip: {
@@ -437,18 +437,18 @@ const styles: Record<string, CSSProperties> = {
     color: "#b9ffd8",
     border: "1px solid rgba(61,255,154,0.35)",
   },
-  chartCard: { background: "rgba(8, 22, 36, 0.88)", border: "1px solid rgba(91,140,255,0.35)", borderRadius: 14, padding: 14 },
+  chartCard: { background: "rgba(16, 16, 16, 0.88)", border: "1px solid rgba(138, 138, 138,0.35)", borderRadius: 14, padding: 14 },
   chartHead: { marginBottom: 8 },
   bottom: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 },
   actions: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 },
   button: {
     background: "transparent",
-    color: "#d8f7ff",
-    border: "1px solid rgba(62,224,255,0.55)",
+    color: "#efefef",
+    border: "1px solid rgba(230, 230, 230,0.55)",
     borderRadius: 999,
     padding: "8px 14px",
     cursor: "pointer",
   },
-  log: { margin: "8px 0 0", paddingLeft: 18, color: "#d5eef8", display: "grid", gap: 6, fontSize: 14 },
-  logTime: { fontFamily: "Consolas, monospace", color: "#7fdbff", marginRight: 8 },
+  log: { margin: "8px 0 0", paddingLeft: 18, color: "#e8e8e8", display: "grid", gap: 6, fontSize: 14 },
+  logTime: { fontFamily: "Consolas, monospace", color: "#c4c4c4", marginRight: 8 },
 };
